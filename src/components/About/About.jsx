@@ -39,7 +39,9 @@ export const About = () => {
           After graduating, I joined Globant, where I worked for more than 10 years as both a Web Developer and Roku Developer, contributing to large-scale streaming and web applications for international clients.
           <br />
           <br />
-          I work with modern frameworks such as React and Angular, and I actively use AI-powered tools like OpenAI ChatGPT and Anthropic Claude to improve development speed, software quality, and overall project efficiency.
+          Today, I’m expanding my focus on modern web development, building applications and digital solutions for real clients as a freelance developer. I work with technologies such as React, TypeScript, and Angular, developing websites, advanced landing pages, and e-commerce platforms from initial concepts to deployment.
+          <br /><br />
+          I also founded <a href="https://tuchidigital.com/" target="_blank" rel="noopener noreferrer">Tuchi Digital</a>, my own web development business, where I create digital products and deliver custom web solutions for clients. Alongside this work, I continuously explore new technologies and AI-powered development tools, including ChatGPT, Claude, and AI coding agents, to improve my workflow, build better software, and keep growing as a developer.
           </p>
         </div>
 
