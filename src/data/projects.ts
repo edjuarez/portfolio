@@ -2,85 +2,75 @@ export const projects = {
   "WEB": [
     {
       id: 1,
-
       title: "Noventitre – Custom Handmade Products Website",
-
       description:
-        "Designed and developed a modern, responsive e-commerce website for a handmade brand specializing in personalized products. Built with React, TypeScript, and Tailwind CSS",
-
+        "Designed and developed a modern, responsive e-commerce website for a handmade brand specializing in personalized products. Built with React, TypeScript, and Tailwind CSS.",
       longDescription:
-        "Designed and developed a modern, responsive e-commerce website for a handmade brand specializing in personalized products. Built with React, TypeScript, and Tailwind CSS",
-
+        "Designed and developed a modern, responsive e-commerce website for a handmade brand specializing in personalized products. Built with React, TypeScript, and Tailwind CSS.",
       image: "./projects/noventitre.webp",
-
       technologies: [
         "React",
         "TypeScript",
         "Tailwind CSS",
-        "Vite"
+        "Vite",
+        "Supabase",
+        "Stripe"
       ],
       category: "Web",
       playable: false,
       gameUrl: "",
-      liveUrl:
-        "https://noventitre.vercel.app/",
-
+      liveUrl: "https://noventitre.vercel.app/",
       githubUrl: "https://github.com/edjuarez/noventitre"
     },
-      {
+    {
       id: 2,
-
-      title: "Miro - Advertising Agency Website",
+      title: "Tuchi Digital – Freelance Web Development & Digital Products",
 
       description:
-        "Developed a responsive corporate website for a creative advertising agency using React, TypeScript, and CSS. Implemented reusable components, modern layouts, and smooth navigation to showcase the agency's services, portfolio, and brand identity.",
+      "Developed a professional platform to showcase freelance web development services and create and sell digital products, including custom websites, landing pages, and e-commerce solutions.",
 
       longDescription:
-        "Developed a responsive corporate website for a creative advertising agency using React, TypeScript, and CSS. Implemented reusable components, modern layouts, and smooth navigation to showcase the agency's services, portfolio, and brand identity.",
-
-      image: "./projects/miro.webp",
-
+      "Designed and developed Tuchi Digital using React and TypeScript, featuring responsive layouts, reusable components, GSAP animations, and a contact form. The platform serves as a portfolio for freelance web development services and a storefront for digital products, supporting client projects from initial development to deployment.",
+      image: "./projects/tuchidigital.webp",
       technologies: [
         "React",
         "TypeScript",
         "CSS",
-        "Vite"
+        "GSAP",
+        "ScrollTrigger",
+        "Vercel"
       ],
       category: "Web",
       playable: false,
       gameUrl: "",
-      liveUrl:
-        "https://github.com/edjuarez/miro-agencia",
-
-      githubUrl: "https://github.com/edjuarez/miro-agencia"
-    },{
+      liveUrl: "https://tuchidigital.com/",
+      githubUrl: "https://github.com/edjuarez/tuchidigital"
+    },
+    {
       id: 3,
-
-      title: "Gifs Searcher App",
+      title: "Sophie Art Tattoo – Tattoo Artist Website",
 
       description:
-        "A modern React application that lets users search for animated GIFs instantly. It features real-time search, responsive design, API integration, and a component-based architecture focused on performance and user experience.",
+        "Designed and developed a professional website for a tattoo artist, showcasing her artwork, portfolio, and personal brand through a distinctive, responsive design.",
 
       longDescription:
-        "",
-
-      image: "./projects/gifs-searcher.webp",
-
+        "Built a responsive website using React, TypeScript, and Tailwind CSS, featuring a tattoo portfolio, artist presentation, FAQ section, contact options, and social media links. Focused on visual identity, typography, reusable components, and a consistent user experience across devices.",
+      image: "./projects/sophiearttattoo.webp",
       technologies: [
         "React",
-        "javascript",
-        "CSS",
-        "Vite"
+        "TypeScript",
+        "Tailwind CSS",
+        "Cloudflare",
+        "SQL"
       ],
       category: "Web",
       playable: false,
       gameUrl: "",
-      liveUrl:
-        "https://github.com/edjuarez/gifs-search-app",
-
-      githubUrl: "https://github.com/edjuarez/gifs-search-app"
-    },
+      liveUrl: "https://sophiearttattoo.com/",
+      githubUrl: "https://github.com/edjuarez/ink-studio"
+    }
   ],
+
   "GAME": [
     {
       id: 1,
@@ -97,9 +87,7 @@ export const projects = {
       ],
       category: "Game",
       playable: false,
-      gameUrl:
-        "/games/rupert/index.html",
-
+      gameUrl: "/games/rupert/index.html",
       liveUrl: "",
       githubUrl: ""
     },
@@ -109,38 +97,27 @@ export const projects = {
       description:
         "Video game developed in Construct for academic purposes. The project implements arcade-style mechanics focused on survival and high-score accumulation. Controls feature mouse-based navigation for movement and click-to-shoot mechanics, requiring precise dodging of enemy attacks.",
       longDescription:
-        "Videogame made in construct for web browsers.",
+        "Videogame made in Construct for web browsers.",
       image: "./projects/masterelba.webp",
       technologies: [
         "Construct",
         "HTML5",
         "Pixel Art"
       ],
-
       category: "Web",
-
       playable: false,
-
       gameUrl: "",
-
-      liveUrl:
-        "",
-
+      liveUrl: "",
       githubUrl: "https://github.com/edjuarez/master-elba-videogame"
     },
     {
       id: 3,
-
       title: "Synesthesia The Game",
-
       description:
         "A 2D action-platformer inspired by classic run-and-gun games like Metal Slug. Players navigate multiple levels using arrow keys, battle waves of zombies, collect weapons, and earn points through a progressive scoring system with increasing difficulty.",
-
       longDescription:
-        "2d videogame for web browsers.",
-
+        "2D videogame for web browsers.",
       image: "./projects/synesthesia.webp",
-
       technologies: [
         "Construct",
         "HTML5",
@@ -150,10 +127,8 @@ export const projects = {
       category: "Web",
       playable: false,
       gameUrl: "",
-      liveUrl:
-        "https://client-site.com",
-
+      liveUrl: "",
       githubUrl: ""
-    },
-  ],
-}
+    }
+  ]
+};
