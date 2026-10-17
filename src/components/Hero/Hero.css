@@ -658,5 +658,10 @@ animation:glitchDistShake .28s linear;
   .vscode-typed-profile {
     transform: scale(0.82);
   }
+  .glitchdist-text {
+    line-height: 0.8;
+    top: -31px;
+    position: relative;
+  }
 
 }

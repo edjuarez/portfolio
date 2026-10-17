@@ -16,7 +16,7 @@ export const Hero = () => {
             <span>Eduardo</span> Juárez
           </h2> */}
 
-		<span class="glitchdist-text" data-text="Eduardo Juárez">
+		<span className="glitchdist-text" data-text="Eduardo Juárez">
 			<span>Eduardo Juárez</span>
 		</span>
 
