@@ -86,7 +86,7 @@ export const Contact = () => {
               </div>
 
               <div>
-                <p>Barcelona, Spain</p>
+                <p>Spain</p>
               </div>
             </div>
 

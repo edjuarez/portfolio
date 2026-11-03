@@ -11,7 +11,7 @@ const FULL_CODE_TOKENS = [
   { text: "'Eduardo Juárez',", type: 'string', line: 2 },
 
   { text: 'role: ', type: 'property', line: 3, indent: 'standard' },
-  { text: "'Frontend, Roku & Game Developer',", type: 'string', line: 3 },
+  { text: "'Frontend & Full Stack Developer',", type: 'string', line: 3 },
 
   { text: 'skills: ', type: 'property', line: 4, indent: 'standard' },
   { text: '[', type: 'plain', line: 4 },
