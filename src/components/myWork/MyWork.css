@@ -1,111 +1,74 @@
+
 .my-work {
   position: relative;
-
-  padding:
-    4rem 8%;
-
+  padding: 4rem 8%;
   overflow: hidden;
-
   background: #0a0f1c;
 }
 
-/* ========================= */
-/* HEADER */
-/* ========================= */
+/* Project categories */
 
-.my-work-header {
-  max-width: 700px;
-
-  margin-bottom: 4rem;
-}
-
-.my-work-header span {
-  display: inline-block;
-
-  color: #5b8cff;
-
-  font-size: 0.8rem;
-
-  font-weight: 700;
-
-  letter-spacing: 0.22rem;
-
-  margin-bottom: 1rem;
-}
-
-.about-title {
-  font-size: 2rem;
-}
-
-.my-work-header p {
-  color:
-    rgba(255,255,255,0.62);
-
-  font-size: 1rem;
-
-  line-height: 1.8;
-
-  max-width: 620px;
+.project-category-section {
+  margin-top: 3rem;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  margin: 30px 0;
-  color:white;
-  
+  margin: 0 0 1.5rem;
+  color: #f1f5f9;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-/* ========================= */
-/* GRID */
-/* ========================= */
+/* Projects grid */
 
 .projects-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 1.8rem;
-
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
-  margin-bottom: 40px;
-}
-.projects-grid-web {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.8rem;
-    align-items: start;
-    width: 60%;
-    margin: 0 auto;
-    justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
-/* ========================= */
-/* RESPONSIVE */
-/* ========================= */
+/* Project cards */
+
+.projects-grid > * {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 250ms ease,
+    background-color 250ms ease,
+    transform 250ms ease;
+}
+
+.projects-grid > *:hover {
+  border-color: rgba(148, 163, 184, 0.3);
+  background: rgba(255, 255, 255, 0.045);
+  transform: translateY(-3px);
+}
+
+/* Responsive */
 
 @media (max-width: 1100px) {
-
   .projects-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
 }
 
 @media (max-width: 780px) {
-
   .my-work {
-    padding:
-      5rem 6%;
+    padding: 5rem 6%;
   }
 
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
-  .my-work-header h2 {
-    font-size: 2.6rem;
+  .section-title {
+    font-size: 1.25rem;
   }
-
 }

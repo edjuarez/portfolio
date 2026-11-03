@@ -74,7 +74,7 @@ export const Hero = () => {
             </a>
 
             <a
-              href="https://drive.google.com/file/d/1GQbZQmxDAqeYrR3Va9r_9ah9M5y6dwjv/view?usp=sharing"
+              href="https://drive.google.com/file/d/1dIXsBcK5gGFqrP9VKH-gY-6DDoQs6LWq/view?usp=sharing"
               target="_blank"
               className="hero-btn secondary"
             >

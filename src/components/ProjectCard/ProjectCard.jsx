@@ -1,247 +1,155 @@
-import "./ProjectCard.css";
 
+import "./ProjectCard.css";
 import {
   FiPlay,
-  FiGlobe,
   FiCode,
   FiMonitor,
   FiLayers,
-  FiGithub
+  FiGithub,
 } from "react-icons/fi";
+import { useEffect, useRef } from "react";
 
-import {
-  useEffect,
-  useRef
-} from "react";
-
-const ProjectCard = ({
-  project,
-  expanded,
-  onToggle
-}) => {
-
+const ProjectCard = ({ project, expanded, onToggle }) => {
   const cardRef = useRef(null);
 
-  /* ========================= */
-  /* AUTO SCROLL */
-  /* ========================= */
-
   useEffect(() => {
+    if (!expanded || !cardRef.current) return;
 
-    if (
-      expanded &&
-      cardRef.current
-    ) {
+    const timeoutId = setTimeout(() => {
+      cardRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 120);
 
-      setTimeout(() => {
-
-        cardRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
-      }, 120);
-
-    }
-
+    return () => clearTimeout(timeoutId);
   }, [expanded]);
 
-  /* ========================= */
-  /* TECH ICON */
-  /* ========================= */
-
   const renderTechIcon = (tech) => {
-
     switch (tech.toLowerCase()) {
-
       case "react":
         return <FiCode />;
-
       case "vite":
         return <FiMonitor />;
-
       case "css":
         return <FiLayers />;
-
       default:
         return <FiCode />;
     }
-
   };
 
+  const badgeClass = {
+    "Technical Demonstration": "project-badge--technical",
+    "Client Project": "project-badge--client",
+    "Personal Business": "project-badge--business",
+    "Academic Project": "project-badge--academic",
+  }[project.projectType] || "";
+
   return (
-
-    <div
-      ref={cardRef}
-      className={
-        expanded
-          ? "project-card expanded"
-          : "project-card"
-      }
-    >
-
-      {/* ========================= */}
-      {/* IMAGE */}
-      {/* ========================= */}
-
+    <article ref={cardRef} className="project-card">
       <div className="project-image-wrapper">
-
         <img
           src={project.image}
           alt={project.title}
           className="project-image"
+          loading="lazy"
         />
 
+        {project.projectType && (
+          <span className={`project-badge ${badgeClass}`}>
+            {project.projectType}
+          </span>
+        )}
       </div>
 
-      {/* ========================= */}
-      {/* CONTENT */}
-      {/* ========================= */}
-
       <div className="project-content">
-
-        {/* TITLE */}
+        {project.liveUrl ? (
           <a
             href={project.liveUrl}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="project-title"
           >
-          <h3>
-            {project.title}
-          </h3>
+            <h3>{project.title}</h3>
           </a>
+        ) : (
+          <div className="project-title">
+            <h3>{project.title}</h3>
+          </div>
+        )}
 
-
-        {/* DESCRIPTION */}
-
-        <p>
+        <p className="project-description">
           {project.description}
         </p>
 
-        {/* ========================= */}
-        {/* TECH */}
-        {/* ========================= */}
-
         <div className="project-tech">
-
-          {project.technologies.map(
-            (tech) => (
-
-              <span key={tech}>
-
-                {renderTechIcon(tech)}
-
-                {tech}
-
-              </span>
-
-            )
-          )}
-
+          {project.technologies.map((tech) => (
+            <span key={tech}>
+              {renderTechIcon(tech)}
+              {tech}
+            </span>
+          ))}
         </div>
 
-        {/* ========================= */}
-        {/* BUTTONS */}
-        {/* ========================= */}
-
-
-
-
         <div className="project-actions">
-        {/* GITHUB */}
-
-        {project.githubUrl && (
-
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="project-card-button github-link"
-          >
-            <FiGithub />
-            <p>GitHub</p>
-          </a>
-
-        )}
-          {/* PLAY */}
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-btn secondary"
+            >
+              <FiGithub />
+              GitHub
+            </a>
+          )}
 
           {project.playable && (
-
             <a
               href={project.gameUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="project-btn primary"
             >
-
               <FiPlay />
-
               Play
-
             </a>
-
           )}
 
+          {(project.longDescription || project.playable) && (
+            <button
+              type="button"
+              className="project-btn secondary"
+              onClick={onToggle}
+              aria-expanded={expanded}
+            >
+              {expanded ? "Show less" : "Details"}
+            </button>
+          )}
         </div>
 
-        {/* ========================= */}
-        {/* EXPANDED CONTENT */}
-        {/* ========================= */}
-
         {expanded && (
-
           <div className="expanded-content">
+            {project.longDescription && (
+              <p className="expanded-description">
+                {project.longDescription}
+              </p>
+            )}
 
-            {/* LONG DESCRIPTION */}
-
-            <p className="expanded-description">
-
-              {project.longDescription}
-
-            </p>
-
-            {/* GAME */}
-
-            {project.playable && (
-
+            {project.playable && project.gameUrl && (
               <iframe
                 src={project.gameUrl}
                 className="game-frame"
                 title={project.title}
+                loading="lazy"
+                allowFullScreen
               />
-
             )}
-
-            {/* GITHUB */}
-
-            {project.githubUrl && (
-
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="github-link"
-              >
-
-                <FiGithub />
-
-                GitHub Repository
-
-              </a>
-
-            )}
-
           </div>
-
         )}
-
       </div>
-
-    </div>
-
+    </article>
   );
-
 };
 
 export default ProjectCard;

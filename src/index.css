@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -112,4 +113,15 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+/* GLOBAL SECTION HEADINGS */
+
+.section-heading {
+  margin: 0 0 1.5rem;
+  color: #f1f5f9;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.055em;
 }

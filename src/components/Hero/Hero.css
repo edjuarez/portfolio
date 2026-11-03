@@ -546,15 +546,17 @@ border-radius:12px;
 }
 
 .glitchdist-text{
-position: relative;
-display: inline-block;
-font-weight: 700;
-color: #04bcff;
-letter-spacing: 1px;
-font-size: 3.8rem;
-margin-bottom: 10px;
-height: 61px;
-left: -1%;
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  color: #04bcff;
+  letter-spacing: 1px;
+  font-size: 3.8rem;
+  margin-bottom: 10px;
+  height: 61px;
+  left: -1%;
+  font-weight: 700;
+  font-style: normal;
 }
 
 .glitchdist-text span{

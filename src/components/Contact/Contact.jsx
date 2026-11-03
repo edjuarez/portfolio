@@ -48,7 +48,7 @@ export const Contact = () => {
         {/* LEFT SIDE */}
 
         <div className="contact-info">
-          <h2 className="about-title">
+          <h2 className="section-heading">
             Let's Talk
           </h2>
 
