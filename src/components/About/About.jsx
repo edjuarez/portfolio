@@ -57,7 +57,7 @@ export const About = () => {
           <div className="about-divider" />
 
           <p className="about-description">
-            Hi, I’m Eduardo — a Web, Roku and Game Developer from
+            Hi, I’m Eduardo! I'm Software Engineer from
             Argentina currently living in Spain. I studied video game
             development and interactive media, which gave me experience
             in programming, design, and creative problem-solving.
@@ -71,29 +71,16 @@ export const About = () => {
 
             <br /><br />
 
-            Today, I’m expanding my focus on modern web development,
-            building applications and digital solutions for real clients
-            as a freelance developer. I work with technologies such as
-            React, TypeScript, and Angular, developing websites, advanced
-            landing pages, and e-commerce platforms from initial concepts
-            to deployment.
-
-            <br /><br />
-
-            I also founded{" "}
-            <a
+            Today, I’m expanding my focus on modern web development through freelance work and my own business, <a
               href="https://tuchidigital.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
               Tuchi Digital
-            </a>
-            , my own web development business, where I create digital
-            products and deliver custom web solutions for clients.
-            Alongside this work, I continuously explore new technologies
-            and AI-powered development tools, including ChatGPT, Claude,
-            and AI coding agents, to improve my workflow, build better
-            software, and keep growing as a developer.
+            </a>, where I build custom digital solutions for real clients, including websites, advanced landing pages, and e-commerce platforms using technologies like React, TypeScript, and Angular. I’m involved in the entire process, from initial concepts to deployment, while continuously exploring new technologies and AI-powered tools such as ChatGPT, Claude, and AI coding agents to improve my workflow and grow as a developer.
+
+            <br /><br />
+
           </p>
         </div>
 

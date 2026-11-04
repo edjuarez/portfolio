@@ -27,9 +27,7 @@ export const MyWork = () => {
       </h2>
       <div className="about-divider" />
       <p className="about-description general-description">
-        Featured projects in web development and game design.
-        I am actively expanding and updating this portfolio
-        with new case studies.
+        A collection of projects showcasing my work, from real-world client applications and technical assessments to academic projects and personal experiments. Explore live demos, code repositories, and documentation to get a closer look at the development process and the work behind each project.
       </p>
 
       

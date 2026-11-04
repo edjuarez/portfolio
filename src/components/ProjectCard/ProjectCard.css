@@ -234,6 +234,27 @@ a.project-title:hover {
 
 /* EXPANDED CONTENT */
 
+/* EXPANDED CONTENT */
+
+.expanded-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 350ms ease,
+    opacity 250ms ease;
+}
+
+.expanded-wrapper.is-expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.expanded-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .expanded-content {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
@@ -241,7 +262,7 @@ a.project-title:hover {
 }
 
 .expanded-description {
-  margin-top: 0;
+  margin: 0;
 }
 
 .game-frame {
@@ -249,7 +270,6 @@ a.project-title:hover {
   width: 100%;
   aspect-ratio: 16 / 9;
   margin-top: 1.25rem;
-
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 8px;
   background: #080d17;
@@ -268,7 +288,8 @@ a.project-title:hover {
   .project-card,
   .project-image,
   .project-title,
-  .project-btn {
+  .project-btn,
+  .expanded-wrapper {
     transition: none;
   }
 

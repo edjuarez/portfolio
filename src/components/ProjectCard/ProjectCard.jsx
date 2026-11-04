@@ -6,6 +6,7 @@ import {
   FiMonitor,
   FiLayers,
   FiGithub,
+  FiGlobe,
 } from "react-icons/fi";
 import { useEffect, useRef } from "react";
 
@@ -126,27 +127,42 @@ const ProjectCard = ({ project, expanded, onToggle }) => {
               {expanded ? "Show less" : "Details"}
             </button>
           )}
+
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-btn primary"
+            >
+              <FiGlobe />
+              Live
+            </a>
+          )}
+
         </div>
 
-        {expanded && (
-          <div className="expanded-content">
-            {project.longDescription && (
-              <p className="expanded-description">
-                {project.longDescription}
-              </p>
-            )}
+        <div className={`expanded-wrapper ${expanded ? "is-expanded" : ""}`}>
+          <div className="expanded-inner">
+            <div className="expanded-content">
+              {project.longDescription && (
+                <p className="expanded-description">
+                  {project.longDescription}
+                </p>
+              )}
 
-            {project.playable && project.gameUrl && (
-              <iframe
-                src={project.gameUrl}
-                className="game-frame"
-                title={project.title}
-                loading="lazy"
-                allowFullScreen
-              />
-            )}
+              {project.playable && project.gameUrl && (
+                <iframe
+                  src={project.gameUrl}
+                  className="game-frame"
+                  title={project.title}
+                  loading="lazy"
+                  allowFullScreen
+                />
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </article>
   );
