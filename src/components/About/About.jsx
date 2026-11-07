@@ -57,18 +57,12 @@ export const About = () => {
           <div className="about-divider" />
 
           <p className="about-description">
-            Hi, I’m Eduardo! I'm Software Engineer from
-            Argentina currently living in Spain. I studied video game
+            Hi, I’m Eduardo! I'm a Software Engineer focused on Frontend and Full Stack Development. I studied video game
             development and interactive media, which gave me experience
             in programming, design, and creative problem-solving.
 
             <br /><br />
-
-            After graduating, I joined Globant, where I worked for more
-            than 10 years as both a Web Developer and Roku Developer,
-            contributing to large-scale streaming and web applications
-            for international clients.
-
+            After graduating, I joined Globant, where I spent over 11 years working as a Frontend Developer on web and TV applications, contributing to large-scale projects for international clients.
             <br /><br />
 
             Today, I’m expanding my focus on modern web development through freelance work and my own business, <a
@@ -77,7 +71,7 @@ export const About = () => {
               rel="noopener noreferrer"
             >
               Tuchi Digital
-            </a>, where I build custom digital solutions for real clients, including websites, advanced landing pages, and e-commerce platforms using technologies like React, TypeScript, and Angular. I’m involved in the entire process, from initial concepts to deployment, while continuously exploring new technologies and AI-powered tools such as ChatGPT, Claude, and AI coding agents to improve my workflow and grow as a developer.
+            </a>, where I build custom digital solutions for real clients, including websites, advanced landing pages, and e-commerce platforms using technologies like React, TypeScript, and Angular. I’m involved in the entire process, from initial concepts to deployment, while continuously exploring new technologies and AI-powered tools such as ChatGPT, Claude, and AI coding agents to improve my workflow, solve problems, and bring new ideas to life.
 
             <br /><br />
 
@@ -113,7 +107,6 @@ export const About = () => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

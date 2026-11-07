@@ -9,19 +9,18 @@ export const Hero = () => {
       <section id="home" className="hero">
 
         {/* LEFT SIDE */}
-
         <div className="hero-left">
 
           {/* <h2 className="hero-title">
             <span>Eduardo</span> Juárez
           </h2> */}
 
-		<span className="glitchdist-text" data-text="Eduardo Juárez">
-			<span>Eduardo Juárez</span>
-		</span>
+          <span className="glitchdist-text" data-text="Eduardo Juárez">
+            <span>Eduardo Juárez</span>
+          </span>
 
           <p className="hero-role">
-            Software Engineer
+            Frontend Engineer
           </p>
     
           <div className="about-divider" />

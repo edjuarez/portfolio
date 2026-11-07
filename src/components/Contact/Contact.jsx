@@ -30,7 +30,7 @@ export const Contact = () => {
         console.log(result.text);
         alert("Message sent successfully!");
         setCooldown(true);
-        setTimeout(() => setCooldown(false), 30000); // 30 seconds cooldown
+        setTimeout(() => setCooldown(false), 30000);
         form.current.reset();
         setIsSending(false);
       }, (error) => {
@@ -91,24 +91,6 @@ export const Contact = () => {
             </div>
 
           </div>
-
-          {/* <div className="contact-socials">
-
-            <a
-              href="https://github.com/"
-              target="_blank"
-            >
-              GitHub
-            </a>
-
-            <a
-              href="https://linkedin.com/"
-              target="_blank"
-            >
-              LinkedIn
-            </a>
-
-          </div> */}
 
         </div>
 
@@ -171,7 +153,6 @@ export const Contact = () => {
                   ? "Sending..."
                   : "Send"}
               </span>
-              {/* <span>Send</span> */}
               <IoSendSharp />
             </button>
 
