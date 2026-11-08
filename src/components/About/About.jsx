@@ -46,7 +46,7 @@ const skills = [
 
 export const About = () => {
   return (
-    <section id="about" className="about">
+    <section id="about" className="about section-container">
       <div className="about-container">
 
         <div className="about-left">
@@ -57,7 +57,7 @@ export const About = () => {
           <div className="about-divider" />
 
           <p className="about-description">
-            Hi, I’m Eduardo! I'm a Software Engineer focused on Frontend and Full Stack Development. I studied video game
+            Hi, I’m Eduardo! I'm a software developer focused on Frontend and Full Stack Development. I studied video game
             development and interactive media, which gave me experience
             in programming, design, and creative problem-solving.
 

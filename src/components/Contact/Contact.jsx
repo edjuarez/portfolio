@@ -41,7 +41,7 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section section-container">
 
       <div className="contact-container">
 

@@ -5,8 +5,8 @@ import ProjectCard from "../ProjectCard/ProjectCard.jsx";
 import { projects } from "../../data/projects.js";
 
 const sectionTitles = {
-  WEB: "Web Projects",
-  GAME: "Game Development",
+  WEB: "Web Projects:",
+  GAME: "Game Projects:",
 };
 
 export const MyWork = () => {
@@ -17,7 +17,7 @@ export const MyWork = () => {
   };
 
   return (
-    <section id="work" className="my-work">
+    <section id="work" className="my-work section-container">
       <span className="about-label general-label">
         Portfolio
       </span>
@@ -29,8 +29,6 @@ export const MyWork = () => {
       <p className="about-description general-description">
         A collection of projects showcasing my work, from real-world client applications and technical assessments to academic projects and personal experiments. Explore live demos, code repositories, and documentation to get a closer look at the development process and the work behind each project.
       </p>
-
-      
 
       {Object.entries(projects).map(([category, items]) => (
         <div key={category} className="project-category-section">

@@ -1,7 +1,14 @@
 
 import "./Navbar.css";
 import { useState } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
+import {
+  FiMenu,
+  FiX,
+  FiHome,
+  FiUser,
+  FiBriefcase,
+  FiMail,
+} from "react-icons/fi";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,20 +21,24 @@ export const Navbar = () => {
         className={`navbar-links ${menuOpen ? "active" : ""}`}
         id="main-navigation"
       >
-        <a href="#home" onClick={closeMenu}>
+        <a className="navbar-item" href="#home" onClick={closeMenu}>
+          <FiHome className="navbar-item-icon" />
           Home
         </a>
 
-        <a href="#about" onClick={closeMenu}>
-          About Me
+        <a className="navbar-item" href="#about" onClick={closeMenu}>
+          <FiUser className="navbar-item-icon" />
+          <span>About Me</span>
         </a>
 
-        <a href="#work" onClick={closeMenu}>
-          My Work
+        <a className="navbar-item" href="#work" onClick={closeMenu}>
+          <FiBriefcase className="navbar-item-icon" />
+          <span>My Work</span>
         </a>
 
-        <a href="#contact" onClick={closeMenu}>
-          Contact
+        <a className="navbar-item" href="#contact" onClick={closeMenu}>
+          <FiMail className="navbar-item-icon" />
+          <span>Contact</span>
         </a>
       </nav>
 

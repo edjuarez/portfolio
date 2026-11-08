@@ -125,3 +125,10 @@ code {
   line-height: 1.15;
   letter-spacing: -0.055em;
 }
+
+.section-container {
+  padding-top: 120px !important;
+  @media (max-width: 1024px) {
+    padding-top: 50px !important;
+  }
+}
