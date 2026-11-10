@@ -36,6 +36,14 @@ export const MyWork = () => {
             {sectionTitles[category] || category}
           </h3>
 
+          {category === "GAME" && (
+            <p className="about-description general-description">
+              All games are playable directly in your browser, with no
+              downloads or installations required. Take a break, have
+              some fun, and enjoy these fun mini games!
+            </p>
+          )}
+
           <div className="projects-grid">
             {items.map((project) => (
               <ProjectCard

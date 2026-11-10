@@ -119,26 +119,6 @@ export const projects = {
 
   GAME: [
     {
-      id: 6,
-      title: "Rupert – Environmental Awareness Game",
-      projectType: "Academic Project",
-      description:
-        "A multi-platform game for web and mobile, combining arcade-style gameplay with an environmental awareness message about ocean pollution.",
-      longDescription:
-        "Developed in ActionScript for web and mobile platforms. Players must protect marine life by preventing fish from being overwhelmed by toxic waste. The project combines fast-paced gameplay, visual storytelling, and pixel art to communicate an environmental message through an interactive experience.",
-      image: "./projects/rupert.webp",
-      technologies: [
-        "ActionScript",
-        "Adobe Flash",
-        "Pixel Art"
-      ],
-      category: "Game",
-      playable: false,
-      gameUrl: "/games/rupert/index.html",
-      liveUrl: "",
-      githubUrl: ""
-    },
-    {
       id: 7,
       title: "Master Elba – Arcade Survival Game",
       projectType: "Academic Project",
@@ -153,10 +133,10 @@ export const projects = {
         "Pixel Art"
       ],
       category: "Game",
-      playable: false,
-      gameUrl: "",
+      playable: true,
+      gameUrl: "/games/master-elba/index.html",
       liveUrl: "",
-      githubUrl: "https://github.com/edjuarez/master-elba-videogame"
+      //githubUrl: "https://github.com/edjuarez/master-elba-videogame"
     },
     {
       id: 8,
@@ -174,10 +154,48 @@ export const projects = {
         "Webpack"
       ],
       category: "Game",
+      playable: true,
+      gameUrl: "/games/synesthesia-the-game/index.html",
+    },
+    {
+      id: 9,
+      title: "Penality",
+      projectType: "Academic Project",
+      description:
+        "A hilarious 2D football game inspired by the infamous Neuer vs. Higuaín incident at the 2014 World Cup. Play as Neuer, take down as many Pipitas as possible, and see how long the referee can keep pretending not to notice.",
+
+      longDescription:
+        "Remember Neuer's infamous collision with Pipita Higuaín during the 2014 World Cup? Well, this time you're in Neuer's shoes! Your mission is to commit as many penalties as possible against the Pipitas running across the pitch. As the game progresses, more and more Pipitas appear, making it harder to keep up with the chaos. Luckily, the referee seems to have a serious eyesight problem and conveniently ignores every foul. How many penalties can you get away with before the match turns into complete madness?",
+
+      image: "./projects/penality1.webp",
+
+      technologies: [
+        "Construct",
+        "HTML5",
+        "Pixel Art",
+        "webpack"
+      ],
+      category: "Web",
+      playable: true,
+      gameUrl: "/games/penality/index.html",
+    },
+    {
+      id: 6,
+      title: "Rupert – Environmental Awareness Game",
+      projectType: "Academic Project",
+      description:
+        "A multi-platform game for web and mobile, combining arcade-style gameplay with an environmental awareness message about ocean pollution.",
+      longDescription:
+        "Developed in ActionScript for web and mobile platforms. Players must protect marine life by preventing fish from being overwhelmed by toxic waste. The project combines fast-paced gameplay, visual storytelling, and pixel art to communicate an environmental message through an interactive experience.",
+      image: "./projects/rupert.webp",
+      technologies: [
+        "ActionScript",
+        "Adobe Flash",
+        "Pixel Art"
+      ],
+      category: "Game",
       playable: false,
-      gameUrl: "",
-      liveUrl: "",
-      githubUrl: ""
-    }
+      gameUrl: "/games/rupert/index.html"
+    },
   ]
 };

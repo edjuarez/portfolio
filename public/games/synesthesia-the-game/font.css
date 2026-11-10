@@ -1,0 +1,10 @@
+﻿@font-face {
+    font-family:'ghoulish_fright_aoeregular';    
+    src: local('ghoulish_fright_aoeregular'), url('ghoulfriaoe_0-webfont.woff') format('ttf'),
+    local('ghoulish_fright_aoeregular'), url('ghoulfriaoe_0-webfont.woff') format('svg'),
+    local('ghoulish_fright_aoeregular'), url('ghoulfriaoe_0-webfont.woff') format('woff'),    
+    local('ghoulish_fright_aoeregular'), url('ghoulfriaoe_0-webfont.woff') format('eot');
+    font-weight: normal;
+    font-style: normal;
+
+}

@@ -298,3 +298,67 @@ a.project-title:hover {
     transform: none;
   }
 }
+
+.game-player {
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 12px;
+  background: #111;
+}
+
+.game-player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  color: white;
+  background: #1b1b1b;
+}
+
+.game-player-header > span {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.game-player-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  border: none;
+  border-radius: 6px;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.game-control-btn:hover {
+  background: #555;
+}
+
+.game-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  background: #000;
+}
+
+.expanded-content {
+  margin-top: 1rem;
+}
+
+@media (max-width: 600px) {
+  .game-frame {
+    aspect-ratio: 4 / 3;
+  }
+}

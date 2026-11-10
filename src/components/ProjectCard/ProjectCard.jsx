@@ -150,16 +150,6 @@ const ProjectCard = ({ project, expanded, onToggle }) => {
                   {project.longDescription}
                 </p>
               )}
-
-              {project.playable && project.gameUrl && (
-                <iframe
-                  src={project.gameUrl}
-                  className="game-frame"
-                  title={project.title}
-                  loading="lazy"
-                  allowFullScreen
-                />
-              )}
             </div>
           </div>
         </div>
