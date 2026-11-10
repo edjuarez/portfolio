@@ -308,23 +308,24 @@ export default function SpaceCursor() {
       charge.progress = 0;
     };
 
-    const triggerHit = (element, x, y, power = 0) => {
-      debug("SHOT HIT", element);
+const triggerHit = (element, x, y, power = 0) => {
+  createImpactSparks(x, y, power);
 
-      createImpactSparks(x, y, power);
+  element.classList.remove("shot-hit", "shot-hit-charged");
 
-      element.classList.remove("shot-hit");
-      void element.offsetWidth;
-      element.classList.add("shot-hit");
+  // Force animation restart
+  void element.offsetWidth;
 
-      if (!reducedMotion) {
-        window.setTimeout(() => {
-          element.classList.remove("shot-hit");
-        }, 300);
-      } else {
-        element.classList.remove("shot-hit");
-      }
-    };
+  const hitClass = power >= 0.95
+    ? "shot-hit-charged"
+    : "shot-hit";
+
+  element.classList.add(hitClass);
+
+  window.setTimeout(() => {
+    element.classList.remove(hitClass);
+  }, 700);
+};
 
     // Draw the energy aura while charging.
     const drawChargeEffect = () => {
