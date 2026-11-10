@@ -16,7 +16,7 @@ export const Navbar = () => {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="navbar">
+    <header className="navbar" data-shootable>
       <nav
         className={`navbar-links ${menuOpen ? "active" : ""}`}
         id="main-navigation"

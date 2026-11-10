@@ -17,17 +17,18 @@ export const Hero = () => {
         <span
           className="glitchdist-text righteous-regular"
           data-text="Eduardo Juárez"
+          data-shootable
         >
           <span>Eduardo Juárez</span>
         </span>
 
         <p className="hero-role">
-          Frontend Engineer
+          <span className="shootable-text" data-shootable>Frontend Engineer</span>
         </p>
 
         <div className="about-divider" />
 
-        <p className="hero-description">
+        <p className="hero-description" data-shootable>
           I build websites, applications and interactive experiences
           with a focus on quality and user experience.
         </p>
@@ -40,6 +41,7 @@ export const Hero = () => {
             rel="noopener noreferrer"
             className="hero-btn"
             aria-label="GitHub"
+            data-shootable
           >
             <FaGithub />
           </a>
@@ -50,6 +52,7 @@ export const Hero = () => {
             rel="noopener noreferrer"
             className="hero-btn"
             aria-label="LinkedIn"
+            data-shootable
           >
             <FaLinkedin />
           </a>
@@ -60,6 +63,7 @@ export const Hero = () => {
             rel="noopener noreferrer"
             className="hero-btn"
             aria-label="Download CV"
+            data-shootable
           >
             <TbFileCvFilled />
           </a>
@@ -77,6 +81,8 @@ export const Hero = () => {
             src="./hero-image.webp"
             alt="Eduardo"
             className="hero-image"
+
+            data-shootable
           />
         </div>
 

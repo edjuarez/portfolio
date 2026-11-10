@@ -1,0 +1,12 @@
+html.space-cursor-enabled,
+html.space-cursor-enabled body,
+html.space-cursor-enabled body * {
+  cursor: none !important;
+}
+
+/* Mantener el cursor de texto en campos editables */
+html.space-cursor-enabled input,
+html.space-cursor-enabled textarea,
+html.space-cursor-enabled [contenteditable="true"] {
+  cursor: text !important;
+}

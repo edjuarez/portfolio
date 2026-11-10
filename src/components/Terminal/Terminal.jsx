@@ -107,7 +107,7 @@ export const Terminal = () => {
 
   return (
 
-    <div className="vscode-typed-profile">
+    <div className="vscode-typed-profile" data-shootable>
 
       <div className="window-header">
 

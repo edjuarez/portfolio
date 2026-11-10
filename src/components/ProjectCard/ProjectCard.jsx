@@ -47,7 +47,7 @@ const ProjectCard = ({ project, expanded, onToggle }) => {
   }[project.projectType] || "";
 
   return (
-    <article ref={cardRef} className="project-card">
+    <article ref={cardRef} className="project-card" data-shootable>
       <div className="project-image-wrapper">
         <img
           src={project.image}

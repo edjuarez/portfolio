@@ -49,12 +49,12 @@ export const Contact = () => {
 
         <div className="contact-info">
           <h2 className="section-heading">
-            Let's Talk
+            <span className="shootable-text" data-shootable>Let's Talk</span>
           </h2>
 
           <div className="about-divider" />
 
-          <p className="contact-description">
+          <p className="contact-description" data-shootable>
             I'm always interested in new projects,
             frontend opportunities and creative ideas.
           </p>
@@ -62,31 +62,31 @@ export const Contact = () => {
           <div className="contact-details">
 
             <div className="contact-item">
-              <div className="contact-icon">
+              <div className="contact-icon" data-shootable>
                 <FiMail />
               </div>
               <div>
-                <p>edujuarezcba@gmail.com</p>
+                <p data-shootable>edujuarezcba@gmail.com</p>
               </div>
             </div>
 
             <div className="contact-item">
-              <div className="contact-icon">
+              <div className="contact-icon" data-shootable>
                 <FiPhone />
               </div>
 
               <div>
-                <p>+34 617913802</p>
+                <p data-shootable>+34 617913802</p>
               </div>
             </div>
 
             <div className="contact-item">
-              <div className="contact-icon">
+              <div className="contact-icon" data-shootable>
                 <FiMapPin />
               </div>
 
               <div>
-                <p>Spain</p>
+                <p data-shootable>Spain</p>
               </div>
             </div>
 
@@ -96,7 +96,7 @@ export const Contact = () => {
 
         {/* RIGHT SIDE */}
 
-        <div className="contact-form-wrapper">
+        <div className="contact-form-wrapper" data-shootable>
 
           <form ref={form}
             className="contact-form"

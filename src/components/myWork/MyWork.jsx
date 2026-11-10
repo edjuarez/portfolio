@@ -23,21 +23,21 @@ export const MyWork = () => {
       </span> */}
 
       <h2 className="section-heading">
-        Selected Projects
+        <span className="shootable-text" data-shootable>Selected Projects</span>
       </h2>
       <div className="about-divider" />
-      <p className="about-description general-description">
+      <p className="about-description general-description" data-shootable>
         A collection of projects showcasing my work, from real-world client applications and technical assessments to academic projects and personal experiments. Explore live demos, code repositories, and documentation to get a closer look at the development process and the work behind each project.
       </p>
 
       {Object.entries(projects).map(([category, items]) => (
         <div key={category} className="project-category-section">
           <h3 className="section-title">
-            {sectionTitles[category] || category}
+            <span className="shootable-text" data-shootable>{sectionTitles[category] || category}</span>
           </h3>
 
           {category === "GAME" && (
-            <p className="about-description general-description">
+            <p className="about-description general-description" data-shootable>
               All games are playable directly in your browser, with no
               downloads or installations required. Take a break, have
               some fun, and enjoy these fun mini games!

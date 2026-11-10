@@ -51,12 +51,12 @@ export const About = () => {
 
         <div className="about-left">
           <h2 className="section-heading">
-            About Me
+            <span className="shootable-text" data-shootable>About Me</span>
           </h2>
 
           <div className="about-divider" />
 
-          <p className="about-description">
+          <p className="about-description" data-shootable>
             Hi, I’m Eduardo! I'm a software developer focused on Frontend and Full Stack Development. I studied video game
             development and interactive media, which gave me experience
             in programming, design, and creative problem-solving.
@@ -84,6 +84,7 @@ export const About = () => {
               src="./profile.webp"
               alt="Eduardo"
               loading="lazy"
+              data-shootable
             />
             <div className="about-glow" />
           </div>
@@ -93,7 +94,7 @@ export const About = () => {
               TECHNOLOGIES & TOOLS
             </p>
 
-            <div className="about-skills-grid">
+            <div className="about-skills-grid" data-shootable>
               {skills.map((skill, index) => (
                 <span
                   key={skill.name}

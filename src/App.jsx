@@ -6,12 +6,14 @@ import {Contact} from './components/Contact/Contact'
 import { MyWork } from './components/MyWork/MyWork'
 import { Navbar } from './components/Navbar/Navbar'
 import { Footer } from './components/Footer/Footer'
+import SpaceCursor from './components/ui/SpaceCursor/SpaceCursor'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <SpaceCursor />
     <div className="app-background">
       <Navbar />
       <Hero />
