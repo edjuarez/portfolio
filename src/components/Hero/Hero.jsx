@@ -1,103 +1,87 @@
+
 import "./Hero.css";
 import { Terminal } from "../Terminal/Terminal.jsx";
 import { FaLinkedin, FaGithub } from "react-icons/fa6";
-import { TbFileCvFilled  } from "react-icons/tb";
+import { TbFileCvFilled } from "react-icons/tb";
+import { ScrollIndicator } from "../ui/ScrollIndicator/ScrollIndicator";
 
 export const Hero = () => {
   return (
-    <>
-      <section id="home" className="hero">
+    <section id="home" className="hero">
 
-        {/* LEFT SIDE */}
-        <div className="hero-left">
+      <div className="hero-background" />
 
-          {/* <h2 className="hero-title">
-            <span>Eduardo</span> Juárez
-          </h2> */}
+      {/* LEFT SIDE */}
+      <div className="hero-left">
 
-          <span className="glitchdist-text" data-text="Eduardo Juárez">
-            <span>Eduardo Juárez</span>
-          </span>
+        <span
+          className="glitchdist-text righteous-regular"
+          data-text="Eduardo Juárez"
+        >
+          <span>Eduardo Juárez</span>
+        </span>
 
-          <p className="hero-role">
-            Frontend Engineer
-          </p>
-    
-          <div className="about-divider" />
+        <p className="hero-role">
+          Frontend Engineer
+        </p>
 
-          <p className="hero-description">
-            I build websites, applications and interactive experiences with a focus on quality and user experience.
-          </p>
+        <div className="about-divider" />
 
-          {/* ICONS */}
+        <p className="hero-description">
+          I build websites, applications and interactive experiences
+          with a focus on quality and user experience.
+        </p>
 
-          {/* <div className="hero-socials">
+        <div className="hero-buttons">
 
-            <a
-              href="https://github.com/"
-              target="_blank"
-            >
-              GitHub
-            </a>
+          <a
+            href="https://github.com/edjuarez"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-btn"
+            aria-label="GitHub"
+          >
+            <FaGithub />
+          </a>
 
-            <a
-              href="https://linkedin.com/"
-              target="_blank"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://linkedin.com/"
-              target="_blank"
-            >
-              Contact
-            </a>
+          <a
+            href="https://linkedin.com/in/eduardo-juarez-dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-btn"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin />
+          </a>
 
-          </div> */}
-          <div className="hero-buttons">
+          <a
+            href="https://drive.google.com/file/d/1QKkHJtvRt4P9YBzCBnJQ-xwF4UnpBjMJ/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-btn"
+            aria-label="Download CV"
+          >
+            <TbFileCvFilled />
+          </a>
 
-            <a
-              href="https://github.com/edjuarez"
-              target="_blank"
-              className="hero-btn primary"
-            >
-              <FaGithub />
-            </a>
-
-            <a
-              href="https://linkedin.com/in/eduardo-juarez-dev"
-              target="_blank"
-              className="hero-btn secondary"
-            >
-              <FaLinkedin  />
-            </a>
-
-            <a
-              href="https://drive.google.com/file/d/1QKkHJtvRt4P9YBzCBnJQ-xwF4UnpBjMJ/view?usp=sharing"
-              target="_blank"
-              className="hero-btn secondary"
-            >
-              <TbFileCvFilled  style={{fontSize: '1.7rem'}} />
-            </a>
-          </div>
         </div>
+      </div>
 
-        {/* RIGHT SIDE */}
+      {/* RIGHT SIDE */}
+      <div className="hero-right">
 
-        <div className="hero-right">
-          <Terminal />
+        <Terminal />
+
         <div className="hero-image-wrapper">
-
-        <img
-          src="./hero-image.webp"
-          alt="Eduardo"
-          className="hero-image"
-        />
+          <img
+            src="./hero-image.webp"
+            alt="Eduardo"
+            className="hero-image"
+          />
+        </div>
 
       </div>
-        </div>
-
-      </section>
-    </>
+    <ScrollIndicator />
+    </section>
   );
 };

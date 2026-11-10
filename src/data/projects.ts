@@ -130,7 +130,8 @@ export const projects = {
       technologies: [
         "Construct",
         "HTML5",
-        "Pixel Art"
+        "Pixel Art",
+        "Webpack"
       ],
       category: "Game",
       playable: true,
@@ -162,7 +163,7 @@ export const projects = {
       title: "Penality",
       projectType: "Academic Project",
       description:
-        "A hilarious 2D football game inspired by the infamous Neuer vs. Higuaín incident at the 2014 World Cup. Play as Neuer, take down as many Pipitas as possible, and see how long the referee can keep pretending not to notice.",
+        "A hilarious 2D football game inspired by the infamous Neuer vs. Higuaín incident at the 2014 World Cup..",
 
       longDescription:
         "Remember Neuer's infamous collision with Pipita Higuaín during the 2014 World Cup? Well, this time you're in Neuer's shoes! Your mission is to commit as many penalties as possible against the Pipitas running across the pitch. As the game progresses, more and more Pipitas appear, making it harder to keep up with the chaos. Luckily, the referee seems to have a serious eyesight problem and conveniently ignores every foul. How many penalties can you get away with before the match turns into complete madness?",
@@ -173,7 +174,7 @@ export const projects = {
         "Construct",
         "HTML5",
         "Pixel Art",
-        "webpack"
+        "Webpack"
       ],
       category: "Web",
       playable: true,

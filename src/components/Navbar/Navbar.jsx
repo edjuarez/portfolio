@@ -28,12 +28,12 @@ export const Navbar = () => {
 
         <a className="navbar-item" href="#about" onClick={closeMenu}>
           <FiUser className="navbar-item-icon" />
-          <span>About Me</span>
+          <span>About</span>
         </a>
 
         <a className="navbar-item" href="#work" onClick={closeMenu}>
           <FiBriefcase className="navbar-item-icon" />
-          <span>My Work</span>
+          <span>Projects</span>
         </a>
 
         <a className="navbar-item" href="#contact" onClick={closeMenu}>

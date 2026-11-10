@@ -18,9 +18,9 @@ export const MyWork = () => {
 
   return (
     <section id="work" className="my-work section-container">
-      <span className="about-label general-label">
+{/*       <span className="about-label general-label">
         Portfolio
-      </span>
+      </span> */}
 
       <h2 className="section-heading">
         Selected Projects
