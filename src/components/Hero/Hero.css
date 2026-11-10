@@ -533,6 +533,9 @@
     left: 19%;
     top: 27%;
   }
+  .scroll-mouse {
+    display: none !important;
+  }
 }
 
 
