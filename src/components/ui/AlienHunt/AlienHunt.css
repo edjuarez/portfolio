@@ -156,19 +156,29 @@
 
 /* ALIEN HUNT HUD */
 
-.alien-hunt-counter {
+
+/* ALIEN HUNT HUD */
+
+.alien-hunt-hud {
   position: fixed;
   top: 18px;
   right: 18px;
-  z-index: 999;
+  z-index: 1000;
 
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.alien-hunt-counter {
+  position: relative;
+  display: flex;
   align-items: center;
   gap: 12px;
 
   min-height: 52px;
   padding: 8px 16px;
+  box-sizing: border-box;
 
   background: rgb(11, 19, 47);
   border: 1px solid rgba(148, 163, 184, 0.16);
@@ -183,28 +193,11 @@
   user-select: none;
 }
 
-.alien-hunt-counter__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 30px;
-  height: 30px;
-
-  border-radius: 8px;
-  background: rgba(85, 214, 255, 0.1);
-  border: 1px solid rgba(85, 214, 255, 0.2);
-
-  color: #55d6ff;
-  font-size: 19px;
-  line-height: 1;
-}
-
 .alien-hunt-counter__content {
   display: flex;
   flex-direction: column;
-  gap: 1px;
   flex-shrink: 0;
+  gap: 1px;
 }
 
 .alien-hunt-counter__label {
@@ -233,6 +226,154 @@
   color: #64748b;
   font-size: 15px;
 }
+
+/* HUNT COMPLETE */
+
+.alien-hunt-counter__complete {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+  padding-left: 12px;
+
+  border-left: 1px solid rgba(255, 179, 71, 0.3);
+
+  color: #ffb347;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+
+  text-shadow: 0 0 10px rgba(255, 179, 71, 0.45);
+  animation: counter-complete 400ms ease-out both;
+}
+
+/* RESTART BUTTON */
+
+.alien-hunt-restart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 52px;
+
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  box-sizing: border-box;
+
+  color: #ffb347;
+  background: rgb(11, 19, 47);
+  border: 1px solid rgba(255, 179, 71, 0.3);
+  border-radius: 12px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  animation: restart-appear 400ms ease-out both;
+
+  transition:
+    color 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.alien-hunt-restart svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  overflow: visible;
+}
+
+.alien-hunt-restart:hover {
+  color: #fff;
+  background: rgba(255, 179, 71, 0.15);
+  border-color: #ffb347;
+  transform: scale(1.06);
+}
+
+.alien-hunt-restart:active {
+  transform: scale(0.94);
+}
+
+.alien-hunt-restart:focus-visible {
+  outline: 2px solid #ffb347;
+  outline-offset: 3px;
+}
+
+@keyframes restart-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes counter-complete {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .alien-hunt-hud {
+    top: 72px;
+    right: 12px;
+    gap: 8px;
+  }
+
+  .alien-hunt-counter {
+    min-height: 46px;
+    padding: 6px 11px;
+    gap: 9px;
+    border-radius: 10px;
+  }
+
+  .alien-hunt-counter__complete {
+    padding-left: 9px;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+
+  .alien-hunt-restart {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+  }
+
+  .alien-hunt-restart svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* TOUCH DEVICES */
+
+@media (hover: none), (pointer: coarse) {
+  .alien-hunt-layer,
+  .alien-hunt-hud {
+    display: none;
+  }
+}
+
 
 /* HUNT COMPLETE */
 /* HUNT COMPLETE */

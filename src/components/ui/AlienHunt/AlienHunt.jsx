@@ -101,10 +101,39 @@ export default function AlienHunt() {
   const [destroyedCount, setDestroyedCount] = useState(0);
   const [totalAliens, setTotalAliens] = useState(0);
   const [victoryPhase, setVictoryPhase] = useState("hidden");
-
+    const [round, setRound] = useState(0);
   const hitTimers = useRef(new Map());
   const deathTimers = useRef(new Map());
+const restartGame = () => {
+  // Cancel pending hit and death timers.
+  hitTimers.current.forEach((timer) => {
+    window.clearTimeout(timer);
+  });
 
+  deathTimers.current.forEach((timer) => {
+    window.clearTimeout(timer);
+  });
+
+  hitTimers.current.clear();
+  deathTimers.current.clear();
+
+  // Recalculate the current page height.
+  const currentHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight,
+    window.innerHeight
+  );
+
+  // Generate a new set of aliens.
+  const generatedAliens = createAliens(currentHeight);
+
+  setPageHeight(currentHeight);
+  setAliens(generatedAliens);
+  setTotalAliens(generatedAliens.length);
+  setDestroyedCount(0);
+  setVictoryPhase("hidden");
+  setRound((current) => current + 1);
+};
   useEffect(() => {
     if (!window.matchMedia("(pointer: fine)").matches) {
       return undefined;
@@ -314,7 +343,7 @@ export default function AlienHunt() {
       <div className="alien-hunt-layer" aria-hidden="true">
         {aliens.map((alien) => (
           <div
-            key={alien.id}
+            key={`${round}-${alien.id}`}
             className={[
               "alien",
               alien.hit ? "alien--hit" : "",
@@ -357,24 +386,48 @@ export default function AlienHunt() {
           </div>
         ))}
       </div>
+<div className="alien-hunt-hud">
+  {totalAliens > 0 && destroyedCount === totalAliens && (
+    <button
+      type="button"
+      className="alien-hunt-restart"
+      onClick={restartGame}
+      aria-label="Restart alien hunt"
+      title="Play again"
+      data-shootable
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M3 2v6h6" />
+        <path d="M3 8a9 9 0 1 1 2.64 6.36" />
+      </svg>
+    </button>
+  )}
 
-      <div className="alien-hunt-counter" data-shootable>
-        <div className="alien-hunt-counter__content">
-          <span className="alien-hunt-counter__label">
-            ALIENS
-          </span>
+  <div className="alien-hunt-counter" data-shootable>
+    <div className="alien-hunt-counter__content">
+      <span className="alien-hunt-counter__label">ALIENS</span>
 
-          <span className="alien-hunt-counter__score">
-            <strong>{destroyedCount}</strong>
-            <span>/ {totalAliens}</span>
-          </span>
-        </div>
-        {totalAliens > 0 && destroyedCount === totalAliens && (
-        <span className="alien-hunt-counter__complete">
-        HUNT <br />COMPLETE
-        </span>
-        )}
-      </div>
+      <span className="alien-hunt-counter__score">
+        <strong>{destroyedCount}</strong>
+        <span>/ {totalAliens}</span>
+      </span>
+    </div>
+
+    {totalAliens > 0 && destroyedCount === totalAliens && (
+      <span className="alien-hunt-counter__complete">
+        HUNT <br /> COMPLETE
+      </span>
+    )}
+  </div>
+</div>
 
       {victoryPhase !== "hidden" && (
         <div
