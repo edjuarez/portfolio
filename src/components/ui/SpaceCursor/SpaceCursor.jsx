@@ -97,13 +97,7 @@ export default function SpaceCursor() {
 
     const reducedMotion = reducedMotionQuery.matches;
 
-    debug("Pointer fine:", pointerQuery.matches);
-    debug("Reduced motion:", reducedMotion);
-
-    if (!pointerQuery.matches) {
-      debug("Disabled: this device does not report a fine pointer");
-      return undefined;
-    }
+    if (!pointerQuery.matches) return undefined;
 
     let animationId = 0;
     let width = window.innerWidth;
@@ -113,12 +107,16 @@ export default function SpaceCursor() {
     let previousTime = 0;
     let lastTargetLog = 0;
 
+    // Controls how frequently engine particles are emitted.
+    let trailAccumulator = 0;
+
     const mouse = {
       x: 0,
       y: 0,
       targetX: 0,
       targetY: 0,
       angle: 0,
+      speed: 0,
       active: false,
       initialized: false,
     };
@@ -156,16 +154,13 @@ export default function SpaceCursor() {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
         mouse.initialized = true;
-
-        debug("Pointer initialized", {
-          x: mouse.x,
-          y: mouse.y,
-        });
       }
     };
 
     const onPointerLeave = () => {
       mouse.active = false;
+      mouse.speed = 0;
+      trailAccumulator = 0;
     };
 
     const getDirection = () => ({
@@ -178,7 +173,7 @@ export default function SpaceCursor() {
       if (reducedMotion) return;
 
       for (let i = 0; i < 5; i += 1) {
-        if (particles.length >= 150) break;
+        if (particles.length >= 250) break;
 
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 2 + 1;
@@ -196,21 +191,73 @@ export default function SpaceCursor() {
       }
     };
 
-    // Impact sparks. Charged shots create a bigger explosion.
+    // Speed-based engine exhaust.
+    const createEngineTrail = (delta) => {
+      if (reducedMotion || !mouse.active) return;
+
+      const intensity = clamp(mouse.speed / 12, 0, 1);
+
+      // Avoid generating smoke when the ship is almost stationary.
+      if (intensity < 0.08) {
+        trailAccumulator = 0;
+        return;
+      }
+
+      const direction = getDirection();
+
+      // Emit from the back of the ship.
+      const exhaustX = mouse.x - direction.x * 13;
+      const exhaustY = mouse.y - direction.y * 13;
+
+      // Faster movement produces a denser trail.
+      const emissionRate = 0.3 + intensity * 2.8;
+
+      trailAccumulator += emissionRate * (delta / 16.67);
+
+      while (trailAccumulator >= 1) {
+        trailAccumulator -= 1;
+
+        if (particles.length >= 250) break;
+
+        const spread = (Math.random() - 0.5) * (4 + intensity * 5);
+        const exhaustSpeed = Math.random() * 1.2 + 0.5;
+
+        particles.push({
+          x: exhaustX + (Math.random() - 0.5) * 4,
+          y: exhaustY + (Math.random() - 0.5) * 4,
+
+          vx:
+            -direction.x * exhaustSpeed -
+            direction.x * intensity * 1.2 +
+            (Math.random() - 0.5) * 0.8,
+
+          vy:
+            -direction.y * exhaustSpeed -
+            direction.y * intensity * 1.2 +
+            (Math.random() - 0.5) * 0.8,
+
+          life: Math.random() * 0.25 + 0.55,
+          size: Math.random() * (3 + intensity * 3) + 2,
+          color: Math.random() > 0.4 ? COLORS.cyan : COLORS.blue,
+          type: "smoke",
+        });
+      }
+    };
+
+    // Impact sparks.
     const createImpactSparks = (x, y, power = 0) => {
       if (reducedMotion) return;
 
       const sparkCount = Math.round(14 + power * 26);
 
       for (let i = 0; i < sparkCount; i += 1) {
-        if (particles.length >= 150) break;
+        if (particles.length >= 250) break;
 
         const angle =
           (Math.PI * 2 * i) / sparkCount +
           (Math.random() - 0.5) * 0.6;
 
-        const speed =
-          Math.random() * (4 + power * 3) + 2;
+        const speed = Math.random() * (4 + power * 3) + 2;
 
         particles.push({
           x,
@@ -225,13 +272,6 @@ export default function SpaceCursor() {
           type: "spark",
         });
       }
-
-      debug("Impact sparks created", {
-        x,
-        y,
-        sparkCount,
-        power,
-      });
     };
 
     // Fire a normal or charged projectile.
@@ -267,27 +307,17 @@ export default function SpaceCursor() {
         power,
       });
 
-      debug(charged ? "CHARGED SHOT!" : "Normal shot", {
-        x,
-        y,
-        power,
-        holdDuration,
-      });
-
       createParticles(x, y);
     };
 
-    // Start charging on mouse down.
+    // Start charging.
     const onPointerDown = (event) => {
       if (event.button !== 0 || event.pointerType === "touch") return;
-      if (!mouse.initialized) return;
-      if (charge.active) return;
+      if (!mouse.initialized || charge.active) return;
 
       charge.active = true;
       charge.startedAt = performance.now();
       charge.progress = 0;
-
-      debug("Charging started");
     };
 
     // Release fires the projectile.
@@ -302,7 +332,6 @@ export default function SpaceCursor() {
       fireShot(holdDuration);
     };
 
-    // Cancel charging without shooting if the browser loses focus.
     const cancelCharge = () => {
       charge.active = false;
       charge.progress = 0;
@@ -312,10 +341,8 @@ export default function SpaceCursor() {
 const triggerHit = (element, x, y, power = 0) => {
   createImpactSparks(x, y, power);
 
-  // Alien collision: notify AlienHunt and skip the normal shake.
+  // Alien collision: AlienHunt handles its health.
   if (element.matches("[data-alien]")) {
-    element.dataset.alienDestroyed = "true";
-
     element.dispatchEvent(
       new CustomEvent("alien-hit", {
         bubbles: true,
@@ -355,7 +382,6 @@ const triggerHit = (element, x, y, power = 0) => {
       ctx.translate(mouse.x, mouse.y);
       ctx.rotate(mouse.angle);
 
-      // Outer energy glow.
       ctx.globalAlpha = alpha;
       ctx.shadowBlur = 12 + progress * 22;
       ctx.shadowColor = COLORS.cyan;
@@ -366,7 +392,6 @@ const triggerHit = (element, x, y, power = 0) => {
       ctx.arc(0, 0, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Inner energy ring.
       ctx.globalAlpha = 0.2 + progress * 0.5;
       ctx.shadowBlur = 8;
       ctx.strokeStyle = COLORS.white;
@@ -382,7 +407,6 @@ const triggerHit = (element, x, y, power = 0) => {
       );
       ctx.stroke();
 
-      // Energy core.
       const coreRadius = 3 + progress * 5;
 
       ctx.globalAlpha = 0.15 + progress * 0.35;
@@ -401,7 +425,7 @@ const triggerHit = (element, x, y, power = 0) => {
       ctx.translate(mouse.x, mouse.y);
       ctx.rotate(mouse.angle);
 
-      // Engine
+      // Engine.
       ctx.shadowBlur = reducedMotion ? 0 : 12;
       ctx.shadowColor = COLORS.cyan;
       ctx.fillStyle = COLORS.orange;
@@ -417,23 +441,23 @@ const triggerHit = (element, x, y, power = 0) => {
       ctx.fillRect(-2, 12, 4, 4);
       ctx.shadowBlur = 0;
 
-      // Wings
+      // Wings.
       ctx.fillStyle = COLORS.blue;
       ctx.fillRect(-10, 1, 4, 10);
       ctx.fillRect(-7, 7, 4, 6);
       ctx.fillRect(6, 1, 4, 10);
       ctx.fillRect(3, 7, 4, 6);
 
-      // Main body
+      // Main body.
       ctx.fillStyle = COLORS.white;
       ctx.fillRect(-4, -9, 8, 19);
       ctx.fillRect(-6, -3, 12, 8);
 
-      // Cockpit
+      // Cockpit.
       ctx.fillStyle = COLORS.cyan;
       ctx.fillRect(-2, -7, 4, 7);
 
-      // Wing details
+      // Wing details.
       ctx.fillStyle = COLORS.orange;
       ctx.fillRect(-9, 5, 2, 3);
       ctx.fillRect(7, 5, 2, 3);
@@ -482,11 +506,9 @@ const triggerHit = (element, x, y, power = 0) => {
         let hitX = bullet.x;
         let hitY = bullet.y;
 
-for (const target of targets) {
-  if (!target.isConnected) continue;
-
-  // Ignore aliens that have already been hit.
-  if (target.dataset.alienDestroyed === "true") continue;
+        for (const target of targets) {
+          if (!target.isConnected) continue;
+          if (target.dataset.alienDestroyed === "true") continue;
 
           const rect = target.getBoundingClientRect();
 
@@ -512,13 +534,7 @@ for (const target of targets) {
         }
 
         if (hitTarget) {
-          triggerHit(
-            hitTarget,
-            hitX,
-            hitY,
-            bullet.power
-          );
-
+          triggerHit(hitTarget, hitX, hitY, bullet.power);
           bullets.splice(i, 1);
           continue;
         }
@@ -557,7 +573,6 @@ for (const target of targets) {
         ctx.lineTo(bullet.x, bullet.y);
         ctx.stroke();
 
-        // Additional orange energy core for charged shots.
         if (bullet.charged) {
           ctx.shadowBlur = reducedMotion ? 0 : 12;
           ctx.shadowColor = COLORS.orange;
@@ -587,6 +602,7 @@ for (const target of targets) {
       }
     };
 
+    // Update and render all particles.
     const updateParticles = (delta) => {
       if (reducedMotion) {
         particles.length = 0;
@@ -601,52 +617,91 @@ for (const target of targets) {
         particle.x += particle.vx * step;
         particle.y += particle.vy * step;
 
-        if (particle.type === "spark") {
-          particle.vx *= Math.pow(0.96, step);
-          particle.vy *= Math.pow(0.96, step);
-          particle.vy += 0.025 * step;
-          particle.life -= 0.055 * step;
-        } else {
-          particle.vx *= Math.pow(0.98, step);
-          particle.vy *= Math.pow(0.98, step);
-          particle.life -= 0.04 * step;
-        }
+        if (particle.type === "smoke") {
+          particle.vx *= Math.pow(0.97, step);
+          particle.vy *= Math.pow(0.97, step);
 
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, particle.life);
-        ctx.strokeStyle = particle.color;
-        ctx.fillStyle = particle.color;
+          particle.size += 0.12 * step;
+          particle.life -= 0.018 * step;
 
-        if (particle.type === "spark") {
-          ctx.shadowBlur = 9;
-          ctx.shadowColor = particle.color;
-          ctx.lineWidth = particle.size;
-          ctx.lineCap = "round";
+          // Soft, expanding engine smoke.
+          ctx.save();
 
-          ctx.beginPath();
-          ctx.moveTo(
-            particle.x - particle.vx * 2.5,
-            particle.y - particle.vy * 2.5
-          );
-          ctx.lineTo(particle.x, particle.y);
-          ctx.stroke();
-        } else {
-          ctx.fillRect(
+          ctx.globalAlpha = Math.max(0, particle.life) * 0.3;
+
+          const gradient = ctx.createRadialGradient(
             particle.x,
             particle.y,
-            particle.size,
-            particle.size
+            0,
+            particle.x,
+            particle.y,
+            particle.size * 2
           );
-        }
 
-        ctx.restore();
+          gradient.addColorStop(0, particle.color);
+          gradient.addColorStop(0.45, particle.color);
+          gradient.addColorStop(1, "transparent");
+
+          ctx.fillStyle = gradient;
+
+          ctx.beginPath();
+          ctx.arc(
+            particle.x,
+            particle.y,
+            particle.size * 2,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+
+          ctx.restore();
+        } else {
+          if (particle.type === "spark") {
+            particle.vx *= Math.pow(0.96, step);
+            particle.vy *= Math.pow(0.96, step);
+            particle.vy += 0.025 * step;
+            particle.life -= 0.055 * step;
+          } else {
+            particle.vx *= Math.pow(0.98, step);
+            particle.vy *= Math.pow(0.98, step);
+            particle.life -= 0.04 * step;
+          }
+
+          ctx.save();
+
+          ctx.globalAlpha = Math.max(0, particle.life);
+          ctx.strokeStyle = particle.color;
+          ctx.fillStyle = particle.color;
+
+          if (particle.type === "spark") {
+            ctx.shadowBlur = 9;
+            ctx.shadowColor = particle.color;
+            ctx.lineWidth = particle.size;
+            ctx.lineCap = "round";
+
+            ctx.beginPath();
+            ctx.moveTo(
+              particle.x - particle.vx * 2.5,
+              particle.y - particle.vy * 2.5
+            );
+            ctx.lineTo(particle.x, particle.y);
+            ctx.stroke();
+          } else {
+            ctx.fillRect(
+              particle.x,
+              particle.y,
+              particle.size,
+              particle.size
+            );
+          }
+
+          ctx.restore();
+        }
 
         if (particle.life <= 0) {
           particles.splice(i, 1);
         }
       }
-
-      ctx.globalAlpha = 1;
     };
 
     const animate = (time) => {
@@ -661,13 +716,24 @@ for (const target of targets) {
 
       ctx.clearRect(0, 0, width, height);
 
+      const step = delta / 16.67;
+
+      const previousX = mouse.x;
+      const previousY = mouse.y;
+
       const dx = mouse.targetX - mouse.x;
       const dy = mouse.targetY - mouse.y;
 
-      const smoothing = 1 - Math.pow(0.78, delta / 16.67);
+      const smoothing = 1 - Math.pow(0.78, step);
 
       mouse.x += dx * smoothing;
       mouse.y += dy * smoothing;
+
+      // Measure actual ship movement, not raw pointer distance.
+      const movementX = mouse.x - previousX;
+      const movementY = mouse.y - previousY;
+
+      mouse.speed = Math.hypot(movementX, movementY) / step;
 
       if (Math.abs(dx) + Math.abs(dy) > 0.5) {
         const targetAngle = Math.atan2(dy, dx) + Math.PI / 2;
@@ -680,7 +746,7 @@ for (const target of targets) {
         );
 
         mouse.angle += difference * (
-          1 - Math.pow(0.85, delta / 16.67)
+          1 - Math.pow(0.85, step)
         );
       }
 
@@ -695,9 +761,15 @@ for (const target of targets) {
         );
       }
 
+      // Create the trail before updating and drawing particles.
+      if (mouse.active && mouse.initialized) {
+        createEngineTrail(delta);
+      }
+
       updateBullets(delta);
       updateParticles(delta);
 
+      // Draw the ship only once per frame.
       if (mouse.active && mouse.initialized) {
         drawChargeEffect();
         drawShip();
@@ -707,11 +779,12 @@ for (const target of targets) {
     resize();
 
     window.addEventListener("resize", resize);
+
     window.addEventListener("pointermove", onPointerMove, {
       passive: true,
     });
-    window.addEventListener("pointerleave", onPointerLeave);
 
+    window.addEventListener("pointerleave", onPointerLeave);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", cancelCharge);
@@ -729,7 +802,6 @@ for (const target of targets) {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerleave", onPointerLeave);
-
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", cancelCharge);
