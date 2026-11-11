@@ -95,6 +95,7 @@ export default function AlienHunt() {
   const [aliens, setAliens] = useState([]);
   const [pageHeight, setPageHeight] = useState(0);
   const [destroyedCount, setDestroyedCount] = useState(0);
+  const [totalAliens, setTotalAliens] = useState(0);
 
   useEffect(() => {
     // Keep this mini-game desktop-only, like the custom cursor.
@@ -109,7 +110,10 @@ export default function AlienHunt() {
     );
 
     setPageHeight(initialHeight);
-    setAliens(createAliens(initialHeight));
+    const generatedAliens = createAliens(initialHeight);
+
+    setAliens(generatedAliens);
+    setTotalAliens(generatedAliens.length);
 
     const measurePage = () => {
       setPageHeight(
@@ -205,11 +209,11 @@ export default function AlienHunt() {
 
             <span className="alien-hunt-counter__score">
             <strong>{destroyedCount}</strong>
-            <span>/ {ALIEN_COUNT}</span>
+            <span>/ {totalAliens}</span>
             </span>
         </div>
 
-        {destroyedCount === ALIEN_COUNT && (
+        {totalAliens > 0 && destroyedCount === totalAliens && (
             <span className="alien-hunt-counter__complete">
             HUNT <br />COMPLETE
             </span>
