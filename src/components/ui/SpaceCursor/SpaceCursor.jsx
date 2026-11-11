@@ -308,17 +308,30 @@ export default function SpaceCursor() {
       charge.progress = 0;
     };
 
+
 const triggerHit = (element, x, y, power = 0) => {
   createImpactSparks(x, y, power);
 
+  // Alien collision: notify AlienHunt and skip the normal shake.
+  if (element.matches("[data-alien]")) {
+    element.dataset.alienDestroyed = "true";
+
+    element.dispatchEvent(
+      new CustomEvent("alien-hit", {
+        bubbles: true,
+        detail: { x, y, power },
+      })
+    );
+
+    return;
+  }
+
   element.classList.remove("shot-hit", "shot-hit-charged");
 
-  // Force animation restart
   void element.offsetWidth;
 
-  const hitClass = power >= 0.95
-    ? "shot-hit-charged"
-    : "shot-hit";
+  const hitClass =
+    power >= 0.95 ? "shot-hit-charged" : "shot-hit";
 
   element.classList.add(hitClass);
 
@@ -326,6 +339,7 @@ const triggerHit = (element, x, y, power = 0) => {
     element.classList.remove(hitClass);
   }, 700);
 };
+
 
     // Draw the energy aura while charging.
     const drawChargeEffect = () => {
@@ -468,8 +482,11 @@ const triggerHit = (element, x, y, power = 0) => {
         let hitX = bullet.x;
         let hitY = bullet.y;
 
-        for (const target of targets) {
-          if (!target.isConnected) continue;
+for (const target of targets) {
+  if (!target.isConnected) continue;
+
+  // Ignore aliens that have already been hit.
+  if (target.dataset.alienDestroyed === "true") continue;
 
           const rect = target.getBoundingClientRect();
 

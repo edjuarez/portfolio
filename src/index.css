@@ -225,3 +225,9 @@ code {
   position: relative;
   padding: 3px 5px;
 }
+
+.space-cursor-enabled,
+.space-cursor-enabled * {
+  -webkit-user-select: none;
+  user-select: none;
+}

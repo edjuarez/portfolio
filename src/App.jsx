@@ -7,6 +7,7 @@ import { MyWork } from './components/MyWork/MyWork'
 import { Navbar } from './components/Navbar/Navbar'
 import { Footer } from './components/Footer/Footer'
 import SpaceCursor from './components/ui/SpaceCursor/SpaceCursor'
+import AlienHunt from "./components/ui/AlienHunt/AlienHunt";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,6 +15,7 @@ function App() {
   return (
     <>
     <SpaceCursor />
+    <AlienHunt />
     <div className="app-background">
       <Navbar />
       <Hero />
