@@ -1,10 +1,12 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import "./AlienHunt.css";
 
-
 const ALIEN_COUNT = 10;
+const ALIEN_MAX_HEALTH = 3;
+const HIT_ANIMATION_MS = 350;
+const DEATH_ANIMATION_MS = 550;
 
 const createAliens = (pageHeight) => {
   const pageWidth = document.documentElement.clientWidth;
@@ -35,13 +37,11 @@ const createAliens = (pageHeight) => {
   for (let index = 0; index < ALIEN_COUNT; index += 1) {
     const size = 42 + Math.random() * 12;
 
-    // Divide the page into 10 vertical zones.
     const zoneTop = (index / ALIEN_COUNT) * pageHeight;
     const zoneBottom = ((index + 1) / ALIEN_COUNT) * pageHeight;
 
     let position = null;
 
-    // Try multiple random positions in this zone.
     for (let attempt = 0; attempt < 100; attempt += 1) {
       const x = size + Math.random() * (pageWidth - size * 2);
       const y =
@@ -59,12 +59,16 @@ const createAliens = (pageHeight) => {
       );
 
       const overlapsAlien = aliens.some((alien) =>
-        overlaps(candidate, {
-          left: alien.x - alien.size / 2,
-          right: alien.x + alien.size / 2,
-          top: alien.y - alien.size / 2,
-          bottom: alien.y + alien.size / 2,
-        }, 45)
+        overlaps(
+          candidate,
+          {
+            left: alien.x - alien.size / 2,
+            right: alien.x + alien.size / 2,
+            top: alien.y - alien.size / 2,
+            bottom: alien.y + alien.size / 2,
+          },
+          45
+        )
       );
 
       if (!overlapsShootable && !overlapsAlien) {
@@ -73,7 +77,6 @@ const createAliens = (pageHeight) => {
       }
     }
 
-    // Skip the zone if there is no available space.
     if (!position) continue;
 
     aliens.push({
@@ -83,22 +86,24 @@ const createAliens = (pageHeight) => {
       size,
       duration: 3 + Math.random() * 2,
       delay: Math.random() * -5,
+      hits: 0,
       hit: false,
+      destroyed: false,
     });
   }
 
   return aliens;
 };
 
-
 export default function AlienHunt() {
   const [aliens, setAliens] = useState([]);
   const [pageHeight, setPageHeight] = useState(0);
   const [destroyedCount, setDestroyedCount] = useState(0);
   const [totalAliens, setTotalAliens] = useState(0);
+const hitTimers = useRef(new Map());
+const deathTimers = useRef(new Map());
 
   useEffect(() => {
-    // Keep this mini-game desktop-only, like the custom cursor.
     if (!window.matchMedia("(pointer: fine)").matches) {
       return undefined;
     }
@@ -110,6 +115,7 @@ export default function AlienHunt() {
     );
 
     setPageHeight(initialHeight);
+
     const generatedAliens = createAliens(initialHeight);
 
     setAliens(generatedAliens);
@@ -132,40 +138,146 @@ export default function AlienHunt() {
 
     window.addEventListener("resize", measurePage);
 
-    // SpaceCursor dispatches this event when a projectile hits an alien.
-    const handleAlienHit = (event) => {
-      const alienElement = event.target;
-      const alienId = Number(alienElement.dataset.alienId);
 
-      if (!alienId) return;
+const handleAlienHit = (event) => {
+  const alienElement = event.target;
+  const alienId = Number(alienElement.dataset.alienId);
+  const power = event.detail?.power ?? 0;
 
+  if (!alienId) return;
+
+  if (alienElement.dataset.alienDestroyed === "true") {
+    return;
+  }
+
+  const previousHits = Number(
+    alienElement.dataset.alienHits || 0
+  );
+
+  const currentHits = previousHits + 1;
+
+  const isCharged = power > 0;
+  const isDead =
+    isCharged || currentHits >= ALIEN_MAX_HEALTH;
+
+  alienElement.dataset.alienHits = String(currentHits);
+
+  // Cancel any previous hit animation timer.
+  const previousTimer = hitTimers.current.get(alienId);
+
+  if (previousTimer) {
+    window.clearTimeout(previousTimer);
+    hitTimers.current.delete(alienId);
+  }
+
+  if (isDead) {
+    alienElement.dataset.alienDestroyed = "true";
+
+    alienElement.classList.remove(
+      "alien--hit",
+      "alien--destroyed"
+    );
+
+    void alienElement.offsetWidth;
+
+    alienElement.classList.add("alien--destroyed");
+
+    setAliens((current) =>
+      current.map((alien) =>
+        alien.id === alienId
+          ? {
+              ...alien,
+              hits: currentHits,
+              hit: false,
+              destroyed: true,
+            }
+          : alien
+      )
+    );
+
+    setDestroyedCount((current) => current + 1);
+
+    const deathTimer = window.setTimeout(() => {
       setAliens((current) =>
-        current.map((alien) =>
-          alien.id === alienId
-            ? { ...alien, hit: true }
-            : alien
-        )
+        current.filter((alien) => alien.id !== alienId)
       );
 
-      setDestroyedCount((current) =>
-        Math.min(current + 1, ALIEN_COUNT)
-      );
+      deathTimers.current.delete(alienId);
+    }, DEATH_ANIMATION_MS);
 
-      // Remove the alien after its destruction animation.
-      window.setTimeout(() => {
-        setAliens((current) =>
-          current.filter((alien) => alien.id !== alienId)
-        );
-      }, 500);
-    };
+    deathTimers.current.set(alienId, deathTimer);
+
+    return;
+  }
+
+  // Non-lethal hit.
+  alienElement.classList.remove(
+    "alien--hit",
+    "alien--destroyed"
+  );
+
+  void alienElement.offsetWidth;
+
+  alienElement.classList.add("alien--hit");
+
+  setAliens((current) =>
+    current.map((alien) =>
+      alien.id === alienId
+        ? {
+            ...alien,
+            hits: currentHits,
+            hit: true,
+          }
+        : alien
+    )
+  );
+
+  const hitTimer = window.setTimeout(() => {
+    if (
+      alienElement.isConnected &&
+      alienElement.dataset.alienDestroyed !== "true"
+    ) {
+      alienElement.classList.remove("alien--hit");
+    }
+
+    setAliens((current) =>
+      current.map((alien) =>
+        alien.id === alienId && !alien.destroyed
+          ? { ...alien, hit: false }
+          : alien
+      )
+    );
+
+    hitTimers.current.delete(alienId);
+  }, HIT_ANIMATION_MS);
+
+  hitTimers.current.set(alienId, hitTimer);
+};
+
 
     document.addEventListener("alien-hit", handleAlienHit);
 
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", measurePage);
-      document.removeEventListener("alien-hit", handleAlienHit);
-    };
+return () => {
+  observer.disconnect();
+
+  window.removeEventListener("resize", measurePage);
+
+  document.removeEventListener(
+    "alien-hit",
+    handleAlienHit
+  );
+
+  hitTimers.current.forEach((timer) => {
+    window.clearTimeout(timer);
+  });
+
+  deathTimers.current.forEach((timer) => {
+    window.clearTimeout(timer);
+  });
+
+  hitTimers.current.clear();
+  deathTimers.current.clear();
+};
   }, []);
 
   if (typeof document === "undefined" || !pageHeight) {
@@ -178,15 +290,20 @@ export default function AlienHunt() {
         {aliens.map((alien) => (
           <div
             key={alien.id}
-            className={`alien ${
-              alien.hit ? "alien--hit" : ""
-            }`}
+            className={[
+              "alien",
+              alien.hit ? "alien--hit" : "",
+              alien.destroyed ? "alien--destroyed" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             data-shootable
             data-alien="true"
             data-alien-id={alien.id}
+            data-alien-hits={alien.hits}
             style={{
-                left: `${alien.x}px`,
-                top: `${alien.y}px`,
+              left: `${alien.x}px`,
+              top: `${alien.y}px`,
               width: `${alien.size}px`,
               height: `${alien.size}px`,
               "--float-duration": `${alien.duration}s`,
@@ -194,32 +311,46 @@ export default function AlienHunt() {
             }}
           >
             <div className="alien__sprite" />
+
+            {!alien.destroyed && (
+              <div className="alien__health">
+                {Array.from(
+                  { length: ALIEN_MAX_HEALTH },
+                  (_, index) => (
+                    <span
+                      key={index}
+                      className={
+                        index < alien.hits
+                          ? "alien__health-point alien__health-point--lost"
+                          : "alien__health-point"
+                      }
+                    />
+                  )
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-
-        <div className="alien-hunt-counter" data-shootable>
-        {/* <span className="alien-hunt-counter__icon">✦</span> */}
-
+      <div className="alien-hunt-counter" data-shootable>
         <div className="alien-hunt-counter__content">
-            <span className="alien-hunt-counter__label">
+          <span className="alien-hunt-counter__label">
             ALIENS
-            </span>
+          </span>
 
-            <span className="alien-hunt-counter__score">
+          <span className="alien-hunt-counter__score">
             <strong>{destroyedCount}</strong>
             <span>/ {totalAliens}</span>
-            </span>
+          </span>
         </div>
 
         {totalAliens > 0 && destroyedCount === totalAliens && (
-            <span className="alien-hunt-counter__complete">
-            HUNT <br />COMPLETE
-            </span>
+          <span className="alien-hunt-counter__complete">
+            HUNT <br /> COMPLETE
+          </span>
         )}
-        </div>
-
+      </div>
     </>,
     document.body
   );

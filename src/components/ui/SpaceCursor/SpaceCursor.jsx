@@ -337,35 +337,36 @@ export default function SpaceCursor() {
       charge.progress = 0;
     };
 
-    const triggerHit = (element, x, y, power = 0) => {
-      createImpactSparks(x, y, power);
 
-      if (element.matches("[data-alien]")) {
-        element.dataset.alienDestroyed = "true";
+const triggerHit = (element, x, y, power = 0) => {
+  createImpactSparks(x, y, power);
 
-        element.dispatchEvent(
-          new CustomEvent("alien-hit", {
-            bubbles: true,
-            detail: { x, y, power },
-          })
-        );
+  // Alien collision: AlienHunt handles its health.
+  if (element.matches("[data-alien]")) {
+    element.dispatchEvent(
+      new CustomEvent("alien-hit", {
+        bubbles: true,
+        detail: { x, y, power },
+      })
+    );
 
-        return;
-      }
+    return;
+  }
 
-      element.classList.remove("shot-hit", "shot-hit-charged");
+  element.classList.remove("shot-hit", "shot-hit-charged");
 
-      void element.offsetWidth;
+  void element.offsetWidth;
 
-      const hitClass =
-        power >= 0.95 ? "shot-hit-charged" : "shot-hit";
+  const hitClass =
+    power >= 0.95 ? "shot-hit-charged" : "shot-hit";
 
-      element.classList.add(hitClass);
+  element.classList.add(hitClass);
 
-      window.setTimeout(() => {
-        element.classList.remove(hitClass);
-      }, 700);
-    };
+  window.setTimeout(() => {
+    element.classList.remove(hitClass);
+  }, 700);
+};
+
 
     // Draw the energy aura while charging.
     const drawChargeEffect = () => {
