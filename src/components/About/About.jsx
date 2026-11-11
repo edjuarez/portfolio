@@ -85,6 +85,7 @@ export const About = () => {
               alt="Eduardo"
               loading="lazy"
               data-shootable
+              draggable={false}
             />
             <div className="about-glow" />
           </div>

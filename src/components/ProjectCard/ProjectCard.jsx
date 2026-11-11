@@ -54,6 +54,7 @@ const ProjectCard = ({ project, expanded, onToggle }) => {
           alt={project.title}
           className="project-image"
           loading="lazy"
+          draggable={false}
         />
 
         {project.projectType && (
