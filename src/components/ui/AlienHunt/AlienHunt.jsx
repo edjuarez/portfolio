@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { MdReplay } from "react-icons/md";
 import "./AlienHunt.css";
 
 const ALIEN_COUNT = 10;
@@ -54,27 +55,28 @@ const createAliens = (pageHeight) => {
         bottom: y + size / 2,
       };
 
-      const overlapsShootable = shootableRects.some((rect) =>
-        overlaps(candidate, rect, 35)
-      );
+const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-      const overlapsAlien = aliens.some((alien) =>
-        overlaps(
-          candidate,
-          {
-            left: alien.x - alien.size / 2,
-            right: alien.x + alien.size / 2,
-            top: alien.y - alien.size / 2,
-            bottom: alien.y + alien.size / 2,
-          },
-          45
-        )
-      );
+const overlapsShootable = !isMobile &&
+  shootableRects.some((rect) => overlaps(candidate, rect, 35));
 
-      if (!overlapsShootable && !overlapsAlien) {
-        position = { x, y };
-        break;
-      }
+const overlapsAlien = aliens.some((alien) =>
+  overlaps(
+    candidate,
+    {
+      left: alien.x - alien.size / 2,
+      right: alien.x + alien.size / 2,
+      top: alien.y - alien.size / 2,
+      bottom: alien.y + alien.size / 2,
+    },
+    45
+  )
+);
+
+if (isMobile || (!overlapsShootable && !overlapsAlien)) {
+  position = { x, y };
+  break;
+}
     }
 
     if (!position) continue;
@@ -135,9 +137,9 @@ const restartGame = () => {
   setRound((current) => current + 1);
 };
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) {
+/*     if (!window.matchMedia("(pointer: fine)").matches) {
       return undefined;
-    }
+    } */
 
     const initialHeight = Math.max(
       document.documentElement.scrollHeight,
@@ -386,7 +388,7 @@ const restartGame = () => {
           </div>
         ))}
       </div>
-<div className="alien-hunt-hud">
+<div className="alien-hunt-hud" data-shootable>
   {totalAliens > 0 && destroyedCount === totalAliens && (
     <button
       type="button"
@@ -394,24 +396,12 @@ const restartGame = () => {
       onClick={restartGame}
       aria-label="Restart alien hunt"
       title="Play again"
-      data-shootable
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M3 2v6h6" />
-        <path d="M3 8a9 9 0 1 1 2.64 6.36" />
-      </svg>
+    <MdReplay className="" />
     </button>
   )}
 
-  <div className="alien-hunt-counter" data-shootable>
+  <div className="alien-hunt-counter">
     <div className="alien-hunt-counter__content">
       <span className="alien-hunt-counter__label">ALIENS</span>
 
