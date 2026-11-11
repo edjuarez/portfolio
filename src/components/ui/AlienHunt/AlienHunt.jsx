@@ -100,8 +100,10 @@ export default function AlienHunt() {
   const [pageHeight, setPageHeight] = useState(0);
   const [destroyedCount, setDestroyedCount] = useState(0);
   const [totalAliens, setTotalAliens] = useState(0);
-const hitTimers = useRef(new Map());
-const deathTimers = useRef(new Map());
+  const [victoryPhase, setVictoryPhase] = useState("hidden");
+
+  const hitTimers = useRef(new Map());
+  const deathTimers = useRef(new Map());
 
   useEffect(() => {
     if (!window.matchMedia("(pointer: fine)").matches) {
@@ -138,147 +140,170 @@ const deathTimers = useRef(new Map());
 
     window.addEventListener("resize", measurePage);
 
+    const handleAlienHit = (event) => {
+      const alienElement = event.target;
+      const alienId = Number(alienElement.dataset.alienId);
+      const power = event.detail?.power ?? 0;
 
-const handleAlienHit = (event) => {
-  const alienElement = event.target;
-  const alienId = Number(alienElement.dataset.alienId);
-  const power = event.detail?.power ?? 0;
+      if (!alienId) return;
 
-  if (!alienId) return;
+      if (alienElement.dataset.alienDestroyed === "true") {
+        return;
+      }
 
-  if (alienElement.dataset.alienDestroyed === "true") {
-    return;
-  }
-
-  const previousHits = Number(
-    alienElement.dataset.alienHits || 0
-  );
-
-  const currentHits = previousHits + 1;
-
-  const isCharged = power > 0;
-  const isDead =
-    isCharged || currentHits >= ALIEN_MAX_HEALTH;
-
-  alienElement.dataset.alienHits = String(currentHits);
-
-  // Cancel any previous hit animation timer.
-  const previousTimer = hitTimers.current.get(alienId);
-
-  if (previousTimer) {
-    window.clearTimeout(previousTimer);
-    hitTimers.current.delete(alienId);
-  }
-
-  if (isDead) {
-    alienElement.dataset.alienDestroyed = "true";
-
-    alienElement.classList.remove(
-      "alien--hit",
-      "alien--destroyed"
-    );
-
-    void alienElement.offsetWidth;
-
-    alienElement.classList.add("alien--destroyed");
-
-    setAliens((current) =>
-      current.map((alien) =>
-        alien.id === alienId
-          ? {
-              ...alien,
-              hits: currentHits,
-              hit: false,
-              destroyed: true,
-            }
-          : alien
-      )
-    );
-
-    setDestroyedCount((current) => current + 1);
-
-    const deathTimer = window.setTimeout(() => {
-      setAliens((current) =>
-        current.filter((alien) => alien.id !== alienId)
+      const previousHits = Number(
+        alienElement.dataset.alienHits || 0
       );
 
-      deathTimers.current.delete(alienId);
-    }, DEATH_ANIMATION_MS);
+      const currentHits = previousHits + 1;
 
-    deathTimers.current.set(alienId, deathTimer);
+      const isCharged = power > 0;
+      const isDead =
+        isCharged || currentHits >= ALIEN_MAX_HEALTH;
 
-    return;
-  }
+      alienElement.dataset.alienHits = String(currentHits);
 
-  // Non-lethal hit.
-  alienElement.classList.remove(
-    "alien--hit",
-    "alien--destroyed"
-  );
+      // Cancel any previous hit animation timer.
+      const previousTimer = hitTimers.current.get(alienId);
 
-  void alienElement.offsetWidth;
+      if (previousTimer) {
+        window.clearTimeout(previousTimer);
+        hitTimers.current.delete(alienId);
+      }
 
-  alienElement.classList.add("alien--hit");
+      if (isDead) {
+        alienElement.dataset.alienDestroyed = "true";
 
-  setAliens((current) =>
-    current.map((alien) =>
-      alien.id === alienId
-        ? {
-            ...alien,
-            hits: currentHits,
-            hit: true,
-          }
-        : alien
-    )
-  );
+        alienElement.classList.remove(
+          "alien--hit",
+          "alien--destroyed"
+        );
 
-  const hitTimer = window.setTimeout(() => {
-    if (
-      alienElement.isConnected &&
-      alienElement.dataset.alienDestroyed !== "true"
-    ) {
-      alienElement.classList.remove("alien--hit");
-    }
+        void alienElement.offsetWidth;
 
-    setAliens((current) =>
-      current.map((alien) =>
-        alien.id === alienId && !alien.destroyed
-          ? { ...alien, hit: false }
-          : alien
-      )
-    );
+        alienElement.classList.add("alien--destroyed");
 
-    hitTimers.current.delete(alienId);
-  }, HIT_ANIMATION_MS);
+        setAliens((current) =>
+          current.map((alien) =>
+            alien.id === alienId
+              ? {
+                  ...alien,
+                  hits: currentHits,
+                  hit: false,
+                  destroyed: true,
+                }
+              : alien
+          )
+        );
 
-  hitTimers.current.set(alienId, hitTimer);
-};
+        setDestroyedCount((current) => current + 1);
 
+        const deathTimer = window.setTimeout(() => {
+          setAliens((current) =>
+            current.filter((alien) => alien.id !== alienId)
+          );
+
+          deathTimers.current.delete(alienId);
+        }, DEATH_ANIMATION_MS);
+
+        deathTimers.current.set(alienId, deathTimer);
+
+        return;
+      }
+
+      // Non-lethal hit.
+      alienElement.classList.remove(
+        "alien--hit",
+        "alien--destroyed"
+      );
+
+      void alienElement.offsetWidth;
+
+      alienElement.classList.add("alien--hit");
+
+      setAliens((current) =>
+        current.map((alien) =>
+          alien.id === alienId
+            ? {
+                ...alien,
+                hits: currentHits,
+                hit: true,
+              }
+            : alien
+        )
+      );
+
+      const hitTimer = window.setTimeout(() => {
+        if (
+          alienElement.isConnected &&
+          alienElement.dataset.alienDestroyed !== "true"
+        ) {
+          alienElement.classList.remove("alien--hit");
+        }
+
+        setAliens((current) =>
+          current.map((alien) =>
+            alien.id === alienId && !alien.destroyed
+              ? { ...alien, hit: false }
+              : alien
+          )
+        );
+
+        hitTimers.current.delete(alienId);
+      }, HIT_ANIMATION_MS);
+
+      hitTimers.current.set(alienId, hitTimer);
+    };
 
     document.addEventListener("alien-hit", handleAlienHit);
 
-return () => {
-  observer.disconnect();
+    return () => {
+      observer.disconnect();
 
-  window.removeEventListener("resize", measurePage);
+      window.removeEventListener("resize", measurePage);
 
-  document.removeEventListener(
-    "alien-hit",
-    handleAlienHit
-  );
+      document.removeEventListener(
+        "alien-hit",
+        handleAlienHit
+      );
 
-  hitTimers.current.forEach((timer) => {
-    window.clearTimeout(timer);
-  });
+      hitTimers.current.forEach((timer) => {
+        window.clearTimeout(timer);
+      });
 
-  deathTimers.current.forEach((timer) => {
-    window.clearTimeout(timer);
-  });
+      deathTimers.current.forEach((timer) => {
+        window.clearTimeout(timer);
+      });
 
-  hitTimers.current.clear();
-  deathTimers.current.clear();
-};
+      hitTimers.current.clear();
+      deathTimers.current.clear();
+    };
   }, []);
+
+  // Victory screen timing.
+  useEffect(() => {
+    if (
+      totalAliens === 0 ||
+      destroyedCount !== totalAliens
+    ) {
+      return;
+    }
+
+    setVictoryPhase("visible");
+
+    const exitTimer = window.setTimeout(() => {
+      setVictoryPhase("exit");
+    }, 3000);
+
+    const hideTimer = window.setTimeout(() => {
+      setVictoryPhase("hidden");
+    }, 3700);
+
+    return () => {
+      window.clearTimeout(exitTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [destroyedCount, totalAliens]);
 
   if (typeof document === "undefined" || !pageHeight) {
     return null;
@@ -344,13 +369,40 @@ return () => {
             <span>/ {totalAliens}</span>
           </span>
         </div>
-
         {totalAliens > 0 && destroyedCount === totalAliens && (
-          <span className="alien-hunt-counter__complete">
-            HUNT <br /> COMPLETE
-          </span>
+        <span className="alien-hunt-counter__complete">
+        HUNT <br />COMPLETE
+        </span>
         )}
       </div>
+
+      {victoryPhase !== "hidden" && (
+        <div
+          className={`alien-victory ${
+            victoryPhase === "exit"
+              ? "alien-victory--exit"
+              : ""
+          }`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="alien-victory__content">
+            <span className="alien-victory__eyebrow">
+              MISSION ACCOMPLISHED
+            </span>
+
+            <h2 className="alien-victory__title">
+              SECTOR <span>CLEARED</span>
+            </h2>
+
+            <p className="alien-victory__subtitle">
+              ALL ALIENS ELIMINATED
+            </p>
+
+            <div className="alien-victory__line" />
+          </div>
+        </div>
+      )}
     </>,
     document.body
   );

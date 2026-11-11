@@ -106,7 +106,8 @@ export default function SpaceCursor() {
     let frame = 0;
     let previousTime = 0;
     let lastTargetLog = 0;
-
+let tutorialStartedAt = null;
+const TUTORIAL_DURATION = 6000;
     // Controls how frequently engine particles are emitted.
     let trailAccumulator = 0;
 
@@ -144,6 +145,9 @@ export default function SpaceCursor() {
     };
 
     const onPointerMove = (event) => {
+if (tutorialStartedAt === null) {
+  tutorialStartedAt = performance.now();
+}
       if (event.pointerType === "touch") return;
 
       mouse.targetX = event.clientX;
@@ -369,56 +373,185 @@ const triggerHit = (element, x, y, power = 0) => {
 
 
     // Draw the energy aura while charging.
-    const drawChargeEffect = () => {
-      if (!charge.active || reducedMotion) return;
 
-      const progress = charge.progress;
-      const pulse = Math.sin(frame * 0.18) * 0.5 + 0.5;
+const drawChargeEffect = () => {
+  if (!charge.active || reducedMotion) return;
 
-      const radius = 17 + progress * 15 + pulse * 2;
-      const alpha = 0.25 + progress * 0.55;
+  const progress = charge.progress;
+  const pulse = Math.sin(frame * 0.18) * 0.5 + 0.5;
 
-      ctx.save();
-      ctx.translate(mouse.x, mouse.y);
-      ctx.rotate(mouse.angle);
+  // Larger energy field.
+  const radius = 19 + progress * 13 + pulse * 2;
+  const alpha = 0.35 + progress * 0.5;
 
-      ctx.globalAlpha = alpha;
-      ctx.shadowBlur = 12 + progress * 22;
-      ctx.shadowColor = COLORS.cyan;
-      ctx.strokeStyle = COLORS.cyan;
-      ctx.lineWidth = 1.5 + progress * 2;
+  ctx.save();
+  ctx.translate(mouse.x, mouse.y);
 
-      ctx.beginPath();
-      ctx.arc(0, 0, radius, 0, Math.PI * 2);
-      ctx.stroke();
+  // Outer energy aura.
+  ctx.globalAlpha = 0.12 + progress * 0.2;
+  ctx.shadowBlur = 25 + progress * 30;
+  ctx.shadowColor = COLORS.cyan;
+  ctx.strokeStyle = COLORS.cyan;
+  ctx.lineWidth = 1.5;
 
-      ctx.globalAlpha = 0.2 + progress * 0.5;
-      ctx.shadowBlur = 8;
-      ctx.strokeStyle = COLORS.white;
-      ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(0, 0, radius + 6, 0, Math.PI * 2);
+  ctx.stroke();
 
-      ctx.beginPath();
-      ctx.arc(
-        0,
-        0,
-        radius - 5,
-        -Math.PI / 2,
-        -Math.PI / 2 + Math.PI * 2 * progress
-      );
-      ctx.stroke();
+  // Background charging ring.
+  ctx.globalAlpha = 0.3;
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = "rgba(85, 214, 255, 0.25)";
+  ctx.lineWidth = 4;
 
-      const coreRadius = 3 + progress * 5;
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, Math.PI * 2);
+  ctx.stroke();
 
-      ctx.globalAlpha = 0.15 + progress * 0.35;
-      ctx.fillStyle = COLORS.cyan;
-      ctx.shadowBlur = 15 + progress * 25;
+  // Color changes as the charge increases.
+  const chargeGradient = ctx.createLinearGradient(
+    -radius,
+    -radius,
+    radius,
+    radius
+  );
 
-      ctx.beginPath();
-      ctx.arc(0, 0, coreRadius, 0, Math.PI * 2);
-      ctx.fill();
+  chargeGradient.addColorStop(0, COLORS.cyan);
+  chargeGradient.addColorStop(0.45, COLORS.blue);
+  chargeGradient.addColorStop(0.75, "#A83BFF");
+  chargeGradient.addColorStop(1, COLORS.orange);
 
-      ctx.restore();
-    };
+  // Progress ring.
+  ctx.globalAlpha = alpha;
+  ctx.shadowBlur = 15 + progress * 25;
+  ctx.shadowColor =
+    progress > 0.75 ? COLORS.orange : COLORS.cyan;
+
+  ctx.strokeStyle = chargeGradient;
+  ctx.lineWidth = 3.5 + progress * 2.5;
+  ctx.lineCap = "round";
+
+  ctx.beginPath();
+  ctx.arc(
+    0,
+    0,
+    radius,
+    -Math.PI / 2,
+    -Math.PI / 2 + Math.PI * 2 * progress
+  );
+  ctx.stroke();
+
+  // Inner energy ring.
+  ctx.globalAlpha = 0.25 + progress * 0.45;
+  ctx.shadowBlur = 10;
+  ctx.strokeStyle = COLORS.white;
+  ctx.lineWidth = 1;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius - 9, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Energy core grows while charging.
+  const coreRadius = 3 + progress * 6;
+
+  ctx.globalAlpha = 0.25 + progress * 0.5;
+  ctx.fillStyle =
+    progress > 0.75 ? COLORS.orange : COLORS.cyan;
+
+  ctx.shadowBlur = 18 + progress * 30;
+  ctx.shadowColor = ctx.fillStyle;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, coreRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Small white energy core.
+  ctx.globalAlpha = 0.5 + progress * 0.5;
+  ctx.fillStyle = COLORS.white;
+  ctx.shadowBlur = 12;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, 2 + progress * 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+};
+
+
+const drawTutorialHint = () => {
+  if (
+    tutorialStartedAt === null ||
+    !mouse.active
+  ) {
+    return;
+  }
+
+  const elapsed = performance.now() - tutorialStartedAt;
+
+  if (elapsed >= TUTORIAL_DURATION) return;
+
+  // Fade out during the last second.
+  const fadeStart = TUTORIAL_DURATION - 1000;
+  const alpha =
+    elapsed > fadeStart
+      ? 1 - (elapsed - fadeStart) / 1000
+      : 1;
+
+  const boxWidth = 156;
+  const boxHeight = 52;
+
+  // Position above and slightly to the left of the ship.
+  let x = mouse.x - boxWidth + 12;
+  let y = mouse.y - boxHeight - 28;
+
+  // Keep the tutorial inside the viewport.
+  x = clamp(x, 12, width - boxWidth - 12);
+  y = clamp(y, 12, height - boxHeight - 12);
+
+  ctx.save();
+
+  ctx.globalAlpha = alpha;
+
+  // Panel background.
+  ctx.fillStyle = "rgba(7, 20, 43, 0.96)";
+  ctx.strokeStyle = "rgba(85, 214, 255, 0.8)";
+  ctx.lineWidth = 1;
+
+  ctx.shadowBlur = 14;
+  ctx.shadowColor = "rgba(85, 214, 255, 0.25)";
+
+  ctx.beginPath();
+  ctx.roundRect(x, y, boxWidth, boxHeight, 7);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.shadowBlur = 0;
+
+  // Accent line.
+  ctx.fillStyle = COLORS.cyan;
+  ctx.fillRect(x + 9, y + 10, 2, 32);
+
+  ctx.font = "600 11px Arial";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+
+  // First instruction.
+  ctx.fillStyle = COLORS.cyan;
+  ctx.fillText("CLICK:", x + 19, y + 17);
+
+  ctx.fillStyle = COLORS.white;
+  ctx.fillText("FIRE", x + 60, y + 17);
+
+  // Second instruction.
+  ctx.fillStyle = COLORS.orange;
+  ctx.fillText("HOLD:", x + 19, y + 37);
+
+  ctx.fillStyle = COLORS.white;
+  ctx.fillText("POWER BLAST", x + 60, y + 37);
+
+  ctx.restore();
+};
+
 
     const drawShip = () => {
       ctx.save();
@@ -506,32 +639,62 @@ const triggerHit = (element, x, y, power = 0) => {
         let hitX = bullet.x;
         let hitY = bullet.y;
 
-        for (const target of targets) {
-          if (!target.isConnected) continue;
-          if (target.dataset.alienDestroyed === "true") continue;
 
-          const rect = target.getBoundingClientRect();
+const collisions = [];
 
-          if (!rect.width || !rect.height) continue;
+for (const target of targets) {
+  if (!target.isConnected) continue;
+  if (target.dataset.alienDestroyed === "true") continue;
 
-          const hitT = segmentIntersectsRect(
-            previousX,
-            previousY,
-            bullet.x,
-            bullet.y,
-            rect,
-            bullet.charged ? 14 : 8
-          );
+  const rect = target.getBoundingClientRect();
 
-          if (hitT !== null) {
-            hitTarget = target;
+  if (!rect.width || !rect.height) continue;
 
-            hitX = previousX + (bullet.x - previousX) * hitT;
-            hitY = previousY + (bullet.y - previousY) * hitT;
+  const hitT = segmentIntersectsRect(
+    previousX,
+    previousY,
+    bullet.x,
+    bullet.y,
+    rect,
+    bullet.charged ? 14 : 8
+  );
 
-            break;
-          }
-        }
+  if (hitT !== null) {
+    collisions.push({
+      target,
+      hitT,
+      isAlien: target.matches("[data-alien]"),
+    });
+  }
+}
+
+collisions.sort((a, b) => {
+  // Aliens always take priority over regular elements.
+  if (a.isAlien !== b.isAlien) {
+    return a.isAlien ? -1 : 1;
+  }
+
+  // Otherwise, hit the closest element along the trajectory.
+  return a.hitT - b.hitT;
+});
+
+const collision = collisions[0];
+
+if (collision) {
+  const { target, hitT } = collision;
+
+  const hitX =
+    previousX + (bullet.x - previousX) * hitT;
+
+  const hitY =
+    previousY + (bullet.y - previousY) * hitT;
+
+  triggerHit(target, hitX, hitY, bullet.power);
+
+  bullets.splice(i, 1);
+  continue;
+}
+
 
         if (hitTarget) {
           triggerHit(hitTarget, hitX, hitY, bullet.power);
@@ -770,10 +933,11 @@ const triggerHit = (element, x, y, power = 0) => {
       updateParticles(delta);
 
       // Draw the ship only once per frame.
-      if (mouse.active && mouse.initialized) {
-        drawChargeEffect();
-        drawShip();
-      }
+if (mouse.active && mouse.initialized) {
+  drawChargeEffect();
+  drawShip();
+  drawTutorialHint();
+}
     };
 
     resize();
