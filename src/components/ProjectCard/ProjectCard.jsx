@@ -65,20 +65,9 @@ export const ProjectCard = ({ project, expanded, onToggle }) => {
       </div>
 
       <div className="project-content">
-        {project.liveUrl ? (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-title"
-          >
-            <h3>{project.title}</h3>
-          </a>
-        ) : (
           <div className="project-title">
             <h3>{project.title}</h3>
           </div>
-        )}
 
         <p className="project-description">
           {project.description}

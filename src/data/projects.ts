@@ -115,6 +115,30 @@ export const projects = {
       liveUrl: "https://podcast-app-edujuarezcba.vercel.app/",
       githubUrl: "https://github.com/edjuarez/podcast-app"
     },
+    {
+      id: 10,
+      title: "Mobile Store – Mobile Phone Catalog",
+      projectType: "Technical Demonstration",
+      description:
+        "A mobile phone catalog application built with React, featuring API integration, product details, shopping cart functionality, and pagination.",
+      longDescription:
+        "Developed as a technical demonstration focused on API integration, state management, and component reusability. Retrieves mobile phone data from an external API and displays products in a paginated catalog. Includes individual product detail views and shopping cart functionality. Uses React Context API to manage shared application state, including cart operations, across different sections of the application. Built with a modular component structure and responsive layouts.",
+      image: "./projects/mobile-catalog.webp",
+      technologies: [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Context API",
+        "REST API",
+        "SCSS"
+      ],
+      category: "Web",
+      playable: false,
+      gameUrl: "",
+      liveUrl: "https://mobile-catalog-liart.vercel.app/",
+      githubUrl: "https://github.com/edjuarez/mobile-catalog"
+    },
+
   ],
 
   GAME: [
@@ -195,7 +219,7 @@ export const projects = {
         "Pixel Art"
       ],
       category: "Game",
-      playable: false,
+      playable: true,
       gameUrl: "/games/rupert/index.html"
     },
   ]
