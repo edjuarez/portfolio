@@ -5,7 +5,6 @@ import {
   FiPhone,
   FiUser,
   FiMessageSquare,
-  FiSend,
 } from "react-icons/fi";
 import emailjs from "@emailjs/browser";
 import { IoSendSharp } from "react-icons/io5";

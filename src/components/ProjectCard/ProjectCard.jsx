@@ -10,7 +10,7 @@ import {
 } from "react-icons/fi";
 import { useEffect, useRef } from "react";
 
-const ProjectCard = ({ project, expanded, onToggle }) => {
+export const ProjectCard = ({ project, expanded, onToggle }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
