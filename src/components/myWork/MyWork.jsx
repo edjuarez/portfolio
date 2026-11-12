@@ -9,7 +9,7 @@ const sectionTitles = {
   GAME: "Game Projects:",
 };
 
-export const MyWork = () => {
+export default function MyWork() {
   const [expandedId, setExpandedId] = useState(null);
 
   const handleToggle = (id) => {
