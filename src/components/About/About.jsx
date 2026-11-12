@@ -1,5 +1,6 @@
 
 import "./About.css";
+import { useEffect } from "react";
 
 import {
   FaReact,
@@ -45,6 +46,56 @@ const skills = [
 ];
 
 export const About = () => {
+useEffect(() => {
+  const container = document.querySelector(".about-skills-grid");
+  const items = container?.querySelectorAll(".skill-item");
+
+  if (!container || !items?.length) return;
+
+  const handlePointerMove = (event) => {
+    items.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const dx = centerX - event.clientX;
+      const dy = centerY - event.clientY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const radius = 130;
+
+      if (distance < radius) {
+        const force = (1 - distance / radius) * 18;
+
+        const moveX = (dx / distance) * force;
+        const moveY = (dy / distance) * force;
+
+        item.style.setProperty("--move-x", `${moveX}px`);
+        item.style.setProperty("--move-y", `${moveY}px`);
+      } else {
+        item.style.setProperty("--move-x", "0px");
+        item.style.setProperty("--move-y", "0px");
+      }
+    });
+  };
+
+  const handlePointerLeave = () => {
+    items.forEach((item) => {
+      item.style.setProperty("--move-x", "0px");
+      item.style.setProperty("--move-y", "0px");
+    });
+  };
+
+  window.addEventListener("pointermove", handlePointerMove);
+  window.addEventListener("blur", handlePointerLeave);
+
+  return () => {
+    window.removeEventListener("pointermove", handlePointerMove);
+    window.removeEventListener("blur", handlePointerLeave);
+    handlePointerLeave();
+  };
+}, []);
   return (
     <section id="about" className="about section-container">
       <div className="about-container">
