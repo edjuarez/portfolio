@@ -23,18 +23,17 @@ export const Hero = () => {
         </span>
 
         <p className="hero-role">
-          <span className="shootable-text" data-shootable>Frontend Engineer</span>
+          <span className="shootable-text" data-shootable>Software Developer</span>
         </p>
 
         <div className="about-divider" />
 
-        <p className="hero-description" data-shootable>
+{/*         <p className="hero-description" data-shootable>
           I build websites, applications and interactive experiences
           with a focus on quality and user experience.
-        </p>
+        </p> */}
 
         <div className="hero-buttons">
-
           <a
             href="https://github.com/edjuarez"
             target="_blank"
@@ -65,7 +64,7 @@ export const Hero = () => {
             aria-label="Download CV"
             data-shootable
           >
-            <TbFileCvFilled />
+            <TbFileCvFilled size="30" />
           </a>
 
         </div>

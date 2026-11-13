@@ -208,6 +208,7 @@
   50% { transform: translate(8px, 4px); }
 }
 
+
 /* Click animation */
 
 .glitchdist-text:active {
@@ -233,6 +234,7 @@
 
   font-family: "Grotesk", sans-serif;
   font-weight: 700;
+  /* animation: glitchDistTop 2s infinite; */
 }
 
 .about-divider {
