@@ -1,6 +1,7 @@
 
 import "./About.css";
 import { useEffect } from "react";
+import { FiMapPin } from "react-icons/fi";
 
 import {
   FaReact,
@@ -139,6 +140,12 @@ useEffect(() => {
               draggable={false}
             />
             <div className="about-glow" />
+            <div className="about-location">
+              <span className="location-icon">
+                <FiMapPin size={14} />
+              </span>
+              <span>Chinatown, NY</span>
+            </div>
           </div>
 
           <div className="about-skills">
