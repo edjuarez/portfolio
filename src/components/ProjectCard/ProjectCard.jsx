@@ -44,6 +44,7 @@ export const ProjectCard = ({ project, expanded, onToggle }) => {
     "Client Project": "project-badge--client",
     "Personal Business": "project-badge--business",
     "Academic Project": "project-badge--academic",
+    "Academic Project · Real Client": "project-badge--client"
   }[project.projectType] || "";
 
   return (

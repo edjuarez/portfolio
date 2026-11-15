@@ -166,17 +166,17 @@ export const projects = {
     {
       id: 8,
       title: "Synesthesia – 2D Action Platformer",
-      projectType: "Academic Project",
+      projectType: "Academic Project · Real Client",
       description:
-        "A 2D action platformer inspired by classic run-and-gun games, featuring multiple levels, enemy waves, weapon pickups, and progressive difficulty.",
+        "A 2D action platformer developed as a university thesis project for Synesthesia, a local rock band. Created as an interactive promotional experience, the game featured the band's music, original pixel art environments, and a scoring system.",
       longDescription:
-        "Developed for web browsers using Construct. The game features side-scrolling action, zombie enemies, collectible weapons, and a progressive scoring system. Inspired by classic arcade games such as Metal Slug, the project combines pixel art and fast-paced gameplay.",
+        "Developed as a university thesis in collaboration with Synesthesia, a local rock band, this project aimed to promote the band through an original browser-based game. Built with Construct 2, it features side-scrolling action, zombie enemies, collectible weapons, multiple levels, and progressive difficulty, all accompanied by the band's music.\n\nOriginally launched on Facebook, the game included a scoring system that allowed players to share their scores and engage with the band's audience. Today, it is showcased in my portfolio with all levels unlocked, allowing visitors to freely explore every environment, soundtrack, and visual design without needing to progress through the game.",
       image: "./projects/synesthesia.webp",
       technologies: [
-        "Construct",
+        "Construct 2",
         "HTML5",
         "Pixel Art",
-        "Webpack"
+        "Game Design"
       ],
       category: "Game",
       playable: true,
@@ -187,7 +187,7 @@ export const projects = {
       title: "Penality",
       projectType: "Academic Project",
       description:
-        "A hilarious 2D football game inspired by the infamous Neuer vs. Higuaín incident at the 2014 World Cup..",
+        "A hilarious 2D football game inspired by the infamous Neuer vs. Higuaín incident at the 2014 World Cup.",
 
       longDescription:
         "Remember Neuer's infamous collision with Pipita Higuaín during the 2014 World Cup? Well, this time you're in Neuer's shoes! Your mission is to commit as many penalties as possible against the Pipitas running across the pitch. As the game progresses, more and more Pipitas appear, making it harder to keep up with the chaos. Luckily, the referee seems to have a serious eyesight problem and conveniently ignores every foul. How many penalties can you get away with before the match turns into complete madness?",
