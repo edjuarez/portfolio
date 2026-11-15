@@ -22,7 +22,8 @@ export const projects = {
       playable: false,
       gameUrl: "",
       liveUrl: "https://tuchidigital.com/",
-      githubUrl: "https://github.com/edjuarez/tuchidigital"
+      githubUrl: "https://github.com/edjuarez/tuchidigital",
+      previewVideo: "./projects/previews/tuchi-digital-preview.mp4",
     },
     {
       id: 3,
@@ -45,7 +46,8 @@ export const projects = {
       playable: false,
       gameUrl: "",
       liveUrl: "https://noventitre.com/",
-      githubUrl: "https://github.com/edjuarez/noventitre"
+      githubUrl: "https://github.com/edjuarez/noventitre",
+      previewVideo: "./projects/previews/noventitre-preview.mp4",
     },
     {
       id: 5,
@@ -67,7 +69,8 @@ export const projects = {
       playable: false,
       gameUrl: "",
       liveUrl: "https://sophiearttattoo.com/",
-      githubUrl: "https://github.com/edjuarez/ink-studio"
+      githubUrl: "https://github.com/edjuarez/ink-studio",
+      previewVideo: "./projects/previews/sophie-art-preview.mp4",
     },
     {
       id: 1,
@@ -160,6 +163,7 @@ export const projects = {
       category: "Game",
       playable: true,
       gameUrl: "/games/master-elba/index.html",
+      previewVideo: "./projects/previews/master-elba-preview.mp4",
       liveUrl: "",
       //githubUrl: "https://github.com/edjuarez/master-elba-videogame"
     },
@@ -181,6 +185,7 @@ export const projects = {
       category: "Game",
       playable: true,
       gameUrl: "/games/synesthesia-the-game/index.html",
+      previewVideo: "./projects/previews/synesthesia-demo.mp4",
     },
     {
       id: 9,
@@ -203,6 +208,7 @@ export const projects = {
       category: "Web",
       playable: true,
       gameUrl: "/games/penality/index.html",
+      previewVideo: "./projects/previews/penality-preview.mp4",
     },
     {
       id: 6,
@@ -220,7 +226,8 @@ export const projects = {
       ],
       category: "Game",
       playable: true,
-      gameUrl: "/games/rupert/index.html"
+      gameUrl: "/games/rupert/index.html",
+      previewVideo: "./projects/previews/rupert-preview.mp4",
     },
   ]
 };
