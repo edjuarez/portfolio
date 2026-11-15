@@ -7,10 +7,12 @@ import { Footer } from './components/Footer/Footer.jsx';
 import SpaceCursor from './components/ui/SpaceCursor/SpaceCursor.jsx';
 import AlienHunt from "./components/ui/AlienHunt/AlienHunt.jsx";
 import { MyWork } from "./components/MyWork/MyWork.jsx";
+import { Preloader } from './components/ui/Preloader/Preloader'
 
 function App() {
   return (
     <>
+      <Preloader />
       <SpaceCursor />
       <AlienHunt />
       <div className="app-background">

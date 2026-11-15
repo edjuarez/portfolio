@@ -8,10 +8,43 @@ import {
   FiGithub,
   FiGlobe,
 } from "react-icons/fi";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const ProjectCard = ({ project, expanded, onToggle }) => {
   const cardRef = useRef(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const previewRef = useRef(null);
+
+  const handlePreviewStart = async () => {
+    if (!project.previewVideo) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const video = previewRef.current;
+    if (!video) return;
+
+    setIsPreviewing(true);
+    video.currentTime = 0;
+
+    try {
+      await video.play();
+    } catch {
+      setIsPreviewing(false);
+    }
+  };
+
+  const handlePreviewEnd = () => {
+    const video = previewRef.current;
+
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+
+    setIsPreviewing(false);
+  };
 
   useEffect(() => {
     if (!expanded || !cardRef.current) return;
@@ -48,7 +81,13 @@ export const ProjectCard = ({ project, expanded, onToggle }) => {
   }[project.projectType] || "";
 
   return (
-    <article ref={cardRef} className="project-card" data-shootable>
+    <article
+      ref={cardRef}
+      className={`project-card ${isPreviewing ? "is-previewing" : ""}`}
+      data-shootable
+      onMouseEnter={handlePreviewStart}
+      onMouseLeave={handlePreviewEnd}
+    >
       <div className="project-image-wrapper">
         <img
           src={project.image}
@@ -57,6 +96,20 @@ export const ProjectCard = ({ project, expanded, onToggle }) => {
           loading="lazy"
           draggable={false}
         />
+
+        {project.previewVideo && (
+          <video
+            ref={previewRef}
+            className="project-preview-video"
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-hidden="true"
+          >
+            <source src={project.previewVideo} type="video/mp4" />
+          </video>
+        )}
 
         {project.projectType && (
           <span className={`project-badge ${badgeClass}`}>

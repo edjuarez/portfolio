@@ -55,7 +55,7 @@ export const Contact = () => {
 
           <p className="contact-description" data-shootable>
             I'm always interested in new projects,
-            frontend opportunities and creative ideas.
+            software development opportunities and creative ideas.
           </p>
 
           <div className="contact-details">
