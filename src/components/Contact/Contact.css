@@ -69,6 +69,28 @@
 
   margin-bottom: 2.5rem;
 }
+.contact-copy-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.copy-button:hover {
+  color: #8b5cf6;
+}
 
 /* ========================= */
 /* DETAILS */
