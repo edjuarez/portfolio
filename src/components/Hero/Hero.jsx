@@ -56,7 +56,7 @@ export const Hero = () => {
             <FaLinkedin />
           </a>
 
-          <a
+{/*           <a
             href="https://drive.google.com/file/d/1QKkHJtvRt4P9YBzCBnJQ-xwF4UnpBjMJ/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
@@ -65,8 +65,16 @@ export const Hero = () => {
             data-shootable
           >
             <TbFileCvFilled size="30" />
+          </a> */}
+          <a
+            href="/public/EduardoJuarez_SoftwareDeveloper.pdf"
+            download="Eduardo-Juarez-CV.pdf"
+            className="hero-btn"
+            aria-label="Download CV"
+            data-shootable
+          >
+            <TbFileCvFilled size="30" />
           </a>
-
         </div>
       </div>
 

@@ -5,7 +5,8 @@ import {
   FiPhone,
   FiUser,
   FiMessageSquare,
-  FiCopy
+  FiCopy,
+  FiCheck
 } from "react-icons/fi";
 import emailjs from "@emailjs/browser";
 import { IoSendSharp } from "react-icons/io5";
@@ -15,8 +16,12 @@ export const Contact = () => {
   const [cooldown, setCooldown] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const form = useRef();
-  const copyText = (text) => {
+  const [copied, setCopied] = useState("");
+  const copyText = (text, type) => {
     navigator.clipboard.writeText(text);
+    setCopied(type);
+
+    setTimeout(() => setCopied(""), 2000);
   };
   const sendEmail = (e) => {
     if (cooldown) {
@@ -64,41 +69,41 @@ export const Contact = () => {
 
           <div className="contact-details">
 
-<div className="contact-item">
-  <div className="contact-icon" data-shootable>
-    <FiMail />
-  </div>
+            <div className="contact-item">
+              <div className="contact-icon" data-shootable>
+                <FiMail />
+              </div>
 
-  <div className="contact-copy-content">
-    <p data-shootable>edujuarezcba@gmail.com</p>
-    <button
-      className="copy-button"
-      onClick={() => copyText("edujuarezcba@gmail.com")}
-      aria-label="Copy email"
-      type="button"
-    >
-      <FiCopy />
-    </button>
-  </div>
-</div>
+              <div className="contact-copy-content">
+                <p data-shootable>edujuarezcba@gmail.com</p>
+                <button
+                  className={`copy-button ${copied === "email" ? "copied" : ""}`}
+                  onClick={() => copyText("edujuarezcba@gmail.com", "email")}
+                  aria-label="Copy email"
+                  type="button"
+                >
+                  {copied === "email" ? <FiCheck /> : <FiCopy />}
+                </button>
+              </div>
+            </div>
 
-<div className="contact-item">
-  <div className="contact-icon" data-shootable>
-    <FiPhone />
-  </div>
+            <div className="contact-item">
+              <div className="contact-icon" data-shootable>
+                <FiPhone />
+              </div>
 
-  <div className="contact-copy-content">
-    <p data-shootable>+34 617913802</p>
-    <button
-      className="copy-button"
-      onClick={() => copyText("+34 617913802")}
-      aria-label="Copy phone"
-      type="button"
-    >
-      <FiCopy />
-    </button>
-  </div>
-</div>
+              <div className="contact-copy-content">
+                <p data-shootable>+34 617913802</p>
+            <button
+              className={`copy-button ${copied === "phone" ? "copied" : ""}`}
+              onClick={() => copyText("+34 617913802", "phone")}
+              aria-label="Copy phone"
+              type="button"
+            >
+              {copied === "phone" ? <FiCheck /> : <FiCopy />}
+            </button>
+              </div>
+            </div>
 
             <div className="contact-item">
               <div className="contact-icon" data-shootable>
